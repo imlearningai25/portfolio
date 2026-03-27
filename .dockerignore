@@ -1,0 +1,56 @@
+# ── Python ──────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+*.so
+
+# ── Virtual environments ─────────────────────────────────────────
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# ── Secrets / environment files ──────────────────────────────────
+.env
+*.env
+!.env.example        # keep the example (it has no real secrets)
+
+# ── Version control ──────────────────────────────────────────────
+.git/
+.gitignore
+
+# ── Testing ──────────────────────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+tests/
+
+# ── IDE / Editor ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Documentation (already in image via README if desired) ───────
+# README.md   ← intentionally NOT ignored so it's in the image
+
+# ── Docker files themselves ───────────────────────────────────────
+Dockerfile
+docker-compose.yml
+.dockerignore

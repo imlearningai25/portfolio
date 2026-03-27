@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+
+  # ── Portfolio Flask App ──────────────────────────────────────────
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime        # use the lean runtime stage
+    container_name: niraj_portfolio
+    restart: unless-stopped
+
+    # ── Environment variables ──────────────────────────────────────
+    # Option A (recommended): supply via a .env file
+    env_file:
+      - .env
+
+    # Option B: hard-code for quick testing (remove in production)
+    # environment:
+    #   GMAIL_USER: nirajbjk@gmail.com
+    #   GMAIL_APP_PASSWORD: your_app_password_here
+    #   SECRET_KEY: change-me-in-production
+
+    ports:
+      - "5000:5000"          # host:container — change left side to use a different host port
+
+    volumes:
+      # Optional: mount static files if you want to edit them without rebuilding
+      # - ./static:/app/static:ro
+
+      # Logs folder (optional)
+      - portfolio_logs:/app/logs
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:5000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+    networks:
+      - portfolio_net
+
+  # ── Nginx Reverse Proxy (optional but recommended for production) ──
+  # Uncomment this block to serve the app behind Nginx with proper
+  # static file handling and SSL termination support.
+  #
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: niraj_nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  #     - ./static:/app/static:ro          # serve static files directly
+  #     - /etc/letsencrypt:/etc/letsencrypt:ro  # SSL certs (if using Let's Encrypt)
+  #   depends_on:
+  #     portfolio:
+  #       condition: service_healthy
+  #   networks:
+  #     - portfolio_net
+
+networks:
+  portfolio_net:
+    driver: bridge
+
+volumes:
+  portfolio_logs:
