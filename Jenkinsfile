@@ -17,8 +17,8 @@ pipeline {
     /* ── Global environment variables ─────────────────────────────── */
     environment {
         // Docker Hub image name — change DOCKER_HUB_USER to your Docker Hub username
-        DOCKER_HUB_USER  = 'imlearningai25'
-        IMAGE_NAME       = "${DOCKER_HUB_USER}/portfolio"
+        DOCKER_HUB_USER  = 'nirajbjk'
+        IMAGE_NAME       = "${DOCKER_HUB_USER}/portfolio-portfolio"
         IMAGE_TAG        = "${BUILD_NUMBER}"          // e.g. portfolio:42
         IMAGE_LATEST     = "${IMAGE_NAME}:latest"
         IMAGE_VERSIONED  = "${IMAGE_NAME}:${IMAGE_TAG}"
