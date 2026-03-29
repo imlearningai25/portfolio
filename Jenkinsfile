@@ -61,7 +61,7 @@ pipeline {
                 echo '🔍 Validating Kubernetes manifests...'
                 sh 'apt install python3.13-venv -y'
                 sh 'python3 -m venv venv'
-                sh 'source venv/bin/activate'
+                sh '. venv/bin/activate'
 
                 sh 'pip install PyYAML schema'
                 sh '''
