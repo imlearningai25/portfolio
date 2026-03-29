@@ -59,6 +59,9 @@ pipeline {
                     echo "✅ app.py syntax OK"
                 '''
                 echo '🔍 Validating Kubernetes manifests...'
+                sh 'python3 -m venv venv'
+                sh 'source venv/bin/activate'
+
                 sh 'pip install PyYAML schema'
                 sh '''
                     for f in k8s/*.yaml; do
@@ -67,6 +70,7 @@ pipeline {
                             || { echo "❌ $f has invalid YAML"; exit 1; }
                     done
                 '''
+                sh 'deactivate'
             }
         }
 
