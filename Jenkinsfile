@@ -63,7 +63,7 @@ pipeline {
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
 
-                sh 'pip install PyYAML schema'
+
                 sh '''
                     for f in k8s/*.yaml; do
                         python3 -c "import yaml, sys; yaml.safe_load_all(open('$f'))" \
