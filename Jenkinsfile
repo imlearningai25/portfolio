@@ -71,7 +71,7 @@ pipeline {
                             || { echo "❌ $f has invalid YAML"; exit 1; }
                     done
                 '''
-                sh 'deactivate'
+
             }
         }
 
