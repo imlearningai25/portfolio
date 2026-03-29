@@ -59,6 +59,7 @@ pipeline {
                     echo "✅ app.py syntax OK"
                 '''
                 echo '🔍 Validating Kubernetes manifests...'
+                sh 'pip install PyYAML schema'
                 sh '''
                     for f in k8s/*.yaml; do
                         python3 -c "import yaml, sys; yaml.safe_load_all(open('$f'))" \
