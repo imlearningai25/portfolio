@@ -1,0 +1,60 @@
+# ── Horizontal Pod Autoscaler (HPA) ───────────────────────────────
+# Automatically scales the number of pods up or down based on
+# CPU usage. No manual intervention needed during traffic spikes.
+#
+# Scaling behaviour:
+#   - Minimum pods:  2  (always at least 2 for high availability)
+#   - Maximum pods: 10  (upper limit to control costs)
+#   - Scale UP  when average CPU > 70% for 1+ minute
+#   - Scale DOWN when CPU drops below threshold for 5+ minutes
+#
+# Prerequisites:
+#   Metrics Server must be installed in your cluster.
+#   Install it with:
+#     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: portfolio-hpa
+  namespace: portfolio
+  labels:
+    app: portfolio
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: portfolio-deployment
+
+  minReplicas: 2                       # Never go below 2 pods
+  maxReplicas: 10                      # Never exceed 10 pods
+
+  metrics:
+    # Scale based on CPU utilisation
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70       # Target: keep avg CPU below 70%
+
+    # Also scale based on memory utilisation
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80       # Target: keep avg memory below 80%
+
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60  # Wait 60s before scaling up again
+      policies:
+        - type: Pods
+          value: 2                     # Add at most 2 pods at a time
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 min before scaling down
+      policies:
+        - type: Pods
+          value: 1                     # Remove at most 1 pod at a time
+          periodSeconds: 60

@@ -1,0 +1,10 @@
+# ── Namespace ──────────────────────────────────────────────────────
+# Isolates all portfolio resources in their own namespace.
+# Apply first before any other manifest.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portfolio
+  labels:
+    app: portfolio
+    managed-by: kubectl

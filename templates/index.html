@@ -1,712 +1,1060 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <!-- ════════════════════════════════════════════════════════════
      HERO SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="home" class="hero">
-  <div class="hero-bg">
-    <div class="grid-overlay"></div>
-    <div class="particles" id="particles"></div>
-  </div>
-  <div class="hero-content">
-    <p class="hero-greeting">Hello, World! I'm</p>
-    <h1 class="hero-name">Niraj Byanjankar</h1>
-    <div class="hero-titles">
-      <span class="typing-prefix">I am a &nbsp;</span>
-      <span class="typing-text" id="typingText"></span>
-      <span class="cursor">|</span>
+    <div class="hero-bg">
+        <div class="grid-overlay"></div>
+        <div class="particles" id="particles"></div>
     </div>
-    <p class="hero-tagline">
-      17+ years engineering enterprise-scale platforms &mdash; from data governance &amp; GCP cloud architecture
-      to AI/ML integration, DevSecOps, and full-stack development.
-    </p>
-    <div class="hero-badges">
-      <span class="badge"><i class="fab fa-google"></i> Google Cloud Certified</span>
-      <span class="badge"><i class="fas fa-shield-alt"></i> Cyber Advocate</span>
-      <span class="badge"><i class="fas fa-database"></i> Data Governance Leader</span>
-      <span class="badge"><i class="fas fa-robot"></i> AI/ML Practitioner</span>
+    <div class="hero-content">
+        <p class="hero-greeting">Hello, World! I'm</p>
+        <h1 class="hero-name">Niraj Byanjankar</h1>
+        <div class="hero-titles">
+            <span class="typing-prefix">I am a &nbsp;</span>
+            <span class="typing-text" id="typingText"></span>
+            <span class="cursor">|</span>
+        </div>
+        <p class="hero-tagline">
+            17+ years engineering enterprise-scale platforms &mdash; from data
+            governance &amp; GCP cloud architecture to AI/ML integration,
+            DevSecOps, and full-stack development.
+        </p>
+        <div class="hero-badges">
+            <span class="badge"
+                ><i class="fab fa-google"></i> Google Cloud Certified</span
+            >
+            <span class="badge"
+                ><i class="fas fa-shield-alt"></i> Cyber Advocate</span
+            >
+            <span class="badge"
+                ><i class="fas fa-database"></i> Data Governance Leader</span
+            >
+            <span class="badge"
+                ><i class="fas fa-robot"></i> AI/ML Practitioner</span
+            >
+        </div>
+        <div class="hero-cta">
+            <a href="#about" class="btn btn-primary"
+                ><i class="fas fa-user"></i> About Me</a
+            >
+            <a href="#contact" class="btn btn-outline"
+                ><i class="fas fa-paper-plane"></i> Get in Touch</a
+            >
+        </div>
+        <div class="hero-scroll-hint">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
     </div>
-    <div class="hero-cta">
-      <a href="#about" class="btn btn-primary"><i class="fas fa-user"></i> About Me</a>
-      <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Get in Touch</a>
-    </div>
-    <div class="hero-scroll-hint">
-      <span>Scroll to explore</span>
-      <div class="scroll-arrow"></div>
-    </div>
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      STATS BAR
 ════════════════════════════════════════════════════════════ -->
 <section class="stats-bar">
-  <div class="stats-container">
-    <div class="stat-item">
-      <span class="stat-number" data-target="17">0</span><span class="stat-plus">+</span>
-      <span class="stat-label">Years Experience</span>
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-number" data-target="17">0</span
+            ><span class="stat-plus">+</span>
+            <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="200">0</span
+            ><span class="stat-plus">+</span>
+            <span class="stat-label">Pipelines Governed</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="30">0</span
+            ><span class="stat-plus">%</span>
+            <span class="stat-label">DQ Incidents Reduced</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="7">0</span
+            ><span class="stat-plus">+</span>
+            <span class="stat-label">Certifications</span>
+        </div>
     </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="200">0</span><span class="stat-plus">+</span>
-      <span class="stat-label">Pipelines Governed</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="30">0</span><span class="stat-plus">%</span>
-      <span class="stat-label">DQ Incidents Reduced</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="7">0</span><span class="stat-plus">+</span>
-      <span class="stat-label">Certifications</span>
-    </div>
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      ABOUT SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="about" class="section about-section">
-  <div class="container">
-    <div class="section-header" data-aos="fade-up">
-      <span class="section-tag">// about me</span>
-      <h2 class="section-title">Who I Am</h2>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">// about me</span>
+            <h2 class="section-title">Who I Am</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-avatar" data-aos="fade-right">
+                <div class="avatar-ring">
+                    <div class="avatar-inner">
+                        <span class="avatar-initials">NB</span>
+                    </div>
+                </div>
+                <div class="avatar-info">
+                    <div class="info-row">
+                        <i class="fas fa-map-marker-alt"></i> USA
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-envelope"></i> nirajbjk@gmail.com
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-phone"></i> 202-OK-NIRAJ
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-briefcase"></i> Open to Senior Roles
+                    </div>
+                </div>
+            </div>
+            <div class="about-text" data-aos="fade-left">
+                <p class="about-lead">
+                    Senior Google Cloud Certified engineer and governance leader
+                    with <strong>10+ years at Verizon Wireless</strong> driving
+                    enterprise-scale data governance modernization, metadata
+                    quality, and security-first engineering — plus
+                    <strong>17+ total years</strong> across well-established US
+                    companies.
+                </p>
+                <p>
+                    I specialize in building scalable platforms, automating
+                    ingestion pipelines, and architecting metadata-driven
+                    solutions. My work spans GCP/BigQuery data cataloging,
+                    curated dataset publishing, and end-to-end metadata
+                    lifecycle management — all with a strong security-first
+                    mindset.
+                </p>
+                <p>
+                    I'm a cross-functional technology leader who partners with
+                    Cybersecurity, Data Engineering, Legal, Compliance, and
+                    AI/ML teams to drive secure, compliant, and high-quality
+                    data usage across the enterprise.
+                </p>
+                <div class="strengths-grid">
+                    <div class="strength-card">
+                        <i class="fas fa-chess-king"></i> Strategic Leadership
+                    </div>
+                    <div class="strength-card">
+                        <i class="fas fa-shield-alt"></i> Cybersecurity-Informed
+                    </div>
+                    <div class="strength-card">
+                        <i class="fas fa-comments"></i> Executive Communication
+                    </div>
+                    <div class="strength-card">
+                        <i class="fas fa-chart-line"></i> Data-Driven Problem
+                        Solving
+                    </div>
+                    <div class="strength-card">
+                        <i class="fas fa-chalkboard-teacher"></i> Technical
+                        Mentorship
+                    </div>
+                    <div class="strength-card">
+                        <i class="fas fa-cloud"></i> Cloud Architecture
+                    </div>
+                </div>
+                <div class="about-looking">
+                    <i class="fas fa-search"></i>
+                    <span
+                        >Open to senior roles in: Software Engineering, Data
+                        Governance, Full Stack, Data Strategy, Cybersecurity
+                        Governance, AI Governance &amp; Enterprise Data
+                        Architecture</span
+                    >
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="about-grid">
-      <div class="about-avatar" data-aos="fade-right">
-        <div class="avatar-ring">
-          <div class="avatar-inner">
-            <span class="avatar-initials">NB</span>
-          </div>
-        </div>
-        <div class="avatar-info">
-          <div class="info-row"><i class="fas fa-map-marker-alt"></i> Collegeville, PA</div>
-          <div class="info-row"><i class="fas fa-envelope"></i> nirajbjk@gmail.com</div>
-          <div class="info-row"><i class="fas fa-phone"></i> 202-656-4725</div>
-          <div class="info-row"><i class="fas fa-briefcase"></i> Open to Senior Roles</div>
-        </div>
-      </div>
-      <div class="about-text" data-aos="fade-left">
-        <p class="about-lead">
-          Senior Google Cloud Certified engineer and governance leader with <strong>10+ years at Verizon Wireless</strong>
-          driving enterprise-scale data governance modernization, metadata quality, and security-first engineering —
-          plus <strong>17+ total years</strong> across well-established US companies.
-        </p>
-        <p>
-          I specialize in building scalable platforms, automating ingestion pipelines, and architecting
-          metadata-driven solutions. My work spans GCP/BigQuery data cataloging, curated dataset publishing,
-          and end-to-end metadata lifecycle management — all with a strong security-first mindset.
-        </p>
-        <p>
-          I'm a cross-functional technology leader who partners with Cybersecurity, Data Engineering,
-          Legal, Compliance, and AI/ML teams to drive secure, compliant, and high-quality data usage
-          across the enterprise.
-        </p>
-        <div class="strengths-grid">
-          <div class="strength-card"><i class="fas fa-chess-king"></i> Strategic Leadership</div>
-          <div class="strength-card"><i class="fas fa-shield-alt"></i> Cybersecurity-Informed</div>
-          <div class="strength-card"><i class="fas fa-comments"></i> Executive Communication</div>
-          <div class="strength-card"><i class="fas fa-chart-line"></i> Data-Driven Problem Solving</div>
-          <div class="strength-card"><i class="fas fa-chalkboard-teacher"></i> Technical Mentorship</div>
-          <div class="strength-card"><i class="fas fa-cloud"></i> Cloud Architecture</div>
-        </div>
-        <div class="about-looking">
-          <i class="fas fa-search"></i>
-          <span>Open to senior roles in: Software Engineering, Data Governance, Full Stack, Data Strategy,
-          Cybersecurity Governance, AI Governance &amp; Enterprise Data Architecture</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      SKILLS SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="skills" class="section skills-section">
-  <div class="container">
-    <div class="section-header" data-aos="fade-up">
-      <span class="section-tag">// tech stack</span>
-      <h2 class="section-title">Skills &amp; Expertise</h2>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">// tech stack</span>
+            <h2 class="section-title">Skills &amp; Expertise</h2>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="0">
+                <div class="skill-cat-header">
+                    <i class="fas fa-code"></i>
+                    <span>Programming</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-primary">Python</span>
+                    <span class="tag tag-primary">JavaScript</span>
+                    <span class="tag tag-primary">SQL</span>
+                    <span class="tag tag-primary">Shell Scripting</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="50">
+                <div class="skill-cat-header">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Frameworks &amp; Web</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-blue">Flask</span>
+                    <span class="tag tag-blue">REST APIs</span>
+                    <span class="tag tag-blue">HTML5/CSS3</span>
+                    <span class="tag tag-blue">NodeJS</span>
+                    <span class="tag tag-blue">ReactJS</span>
+                    <span class="tag tag-blue">AngularJS</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
+                <div class="skill-cat-header">
+                    <i class="fas fa-robot"></i>
+                    <span>AI / ML</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-purple">AI/ML</span>
+                    <span class="tag tag-purple">LLM</span>
+                    <span class="tag tag-purple">RAG</span>
+                    <span class="tag tag-purple">ChatGPT</span>
+                    <span class="tag tag-purple">Gemini</span>
+                    <span class="tag tag-purple">Claude</span>
+                    <span class="tag tag-purple">OpenAI</span>
+                    <span class="tag tag-purple">N8N</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="150">
+                <div class="skill-cat-header">
+                    <i class="fas fa-cloud"></i>
+                    <span>Cloud &amp; Platforms</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-cyan">GCP</span>
+                    <span class="tag tag-cyan">BigQuery</span>
+                    <span class="tag tag-cyan">Cloud Functions</span>
+                    <span class="tag tag-cyan">GCP Dataplex</span>
+                    <span class="tag tag-cyan">Cloud Composer</span>
+                    <span class="tag tag-cyan">Docker</span>
+                    <span class="tag tag-cyan">Kubernetes</span>
+                    <span class="tag tag-cyan">Spark</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                <div class="skill-cat-header">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Data Governance &amp; Cataloging</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-green">Collibra</span>
+                    <span class="tag tag-green">Alation</span>
+                    <span class="tag tag-green">ICP4D</span>
+                    <span class="tag tag-green">Watson IKC</span>
+                    <span class="tag tag-green">BigQuery Catalog</span>
+                    <span class="tag tag-green">Lineage Tracking</span>
+                    <span class="tag tag-green">Metadata Curation</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="250">
+                <div class="skill-cat-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security &amp; Compliance</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-red">SSO / LDAP</span>
+                    <span class="tag tag-red">CyberArk</span>
+                    <span class="tag tag-red">OKTA</span>
+                    <span class="tag tag-red">Fortify</span>
+                    <span class="tag tag-red">BlackDuck</span>
+                    <span class="tag tag-red">DAST</span>
+                    <span class="tag tag-red">SonarQube</span>
+                    <span class="tag tag-red">GDPR / CCPA / CPRA</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
+                <div class="skill-cat-header">
+                    <i class="fas fa-infinity"></i>
+                    <span>DevOps &amp; CI/CD</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-orange">Airflow DAGs</span>
+                    <span class="tag tag-orange">GitLab CI</span>
+                    <span class="tag tag-orange">Jenkins</span>
+                    <span class="tag tag-orange">Git</span>
+                    <span class="tag tag-orange">Docker</span>
+                    <span class="tag tag-orange">Kubernetes</span>
+                    <span class="tag tag-orange">Kafka</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="350">
+                <div class="skill-cat-header">
+                    <i class="fas fa-database"></i>
+                    <span>Databases</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-yellow">Oracle</span>
+                    <span class="tag tag-yellow">MSSQL</span>
+                    <span class="tag tag-yellow">MySQL</span>
+                    <span class="tag tag-yellow">PostgreSQL</span>
+                    <span class="tag tag-yellow">MongoDB</span>
+                    <span class="tag tag-yellow">BigQuery</span>
+                </div>
+            </div>
+
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="400">
+                <div class="skill-cat-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Visualization &amp; Analytics</span>
+                </div>
+                <div class="skill-tags">
+                    <span class="tag tag-pink">Tableau</span>
+                    <span class="tag tag-pink">Qlik</span>
+                    <span class="tag tag-pink">Splunk</span>
+                    <span class="tag tag-pink">Logstash</span>
+                    <span class="tag tag-pink">ETL Development</span>
+                    <span class="tag tag-pink">BI Integration</span>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="skills-grid">
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="0">
-        <div class="skill-cat-header">
-          <i class="fas fa-code"></i>
-          <span>Programming</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-primary">Python</span>
-          <span class="tag tag-primary">JavaScript</span>
-          <span class="tag tag-primary">SQL</span>
-          <span class="tag tag-primary">Shell Scripting</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="50">
-        <div class="skill-cat-header">
-          <i class="fas fa-layer-group"></i>
-          <span>Frameworks &amp; Web</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-blue">Flask</span>
-          <span class="tag tag-blue">REST APIs</span>
-          <span class="tag tag-blue">HTML5/CSS3</span>
-          <span class="tag tag-blue">NodeJS</span>
-          <span class="tag tag-blue">ReactJS</span>
-          <span class="tag tag-blue">AngularJS</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
-        <div class="skill-cat-header">
-          <i class="fas fa-robot"></i>
-          <span>AI / ML</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-purple">AI/ML</span>
-          <span class="tag tag-purple">LLM</span>
-          <span class="tag tag-purple">RAG</span>
-          <span class="tag tag-purple">ChatGPT</span>
-          <span class="tag tag-purple">Gemini</span>
-          <span class="tag tag-purple">Claude</span>
-          <span class="tag tag-purple">OpenAI</span>
-          <span class="tag tag-purple">N8N</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="150">
-        <div class="skill-cat-header">
-          <i class="fas fa-cloud"></i>
-          <span>Cloud &amp; Platforms</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-cyan">GCP</span>
-          <span class="tag tag-cyan">BigQuery</span>
-          <span class="tag tag-cyan">Cloud Functions</span>
-          <span class="tag tag-cyan">GCP Dataplex</span>
-          <span class="tag tag-cyan">Cloud Composer</span>
-          <span class="tag tag-cyan">Docker</span>
-          <span class="tag tag-cyan">Kubernetes</span>
-          <span class="tag tag-cyan">Spark</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
-        <div class="skill-cat-header">
-          <i class="fas fa-sitemap"></i>
-          <span>Data Governance &amp; Cataloging</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-green">Collibra</span>
-          <span class="tag tag-green">Alation</span>
-          <span class="tag tag-green">ICP4D</span>
-          <span class="tag tag-green">Watson IKC</span>
-          <span class="tag tag-green">BigQuery Catalog</span>
-          <span class="tag tag-green">Lineage Tracking</span>
-          <span class="tag tag-green">Metadata Curation</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="250">
-        <div class="skill-cat-header">
-          <i class="fas fa-shield-alt"></i>
-          <span>Security &amp; Compliance</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-red">SSO / LDAP</span>
-          <span class="tag tag-red">CyberArk</span>
-          <span class="tag tag-red">OKTA</span>
-          <span class="tag tag-red">Fortify</span>
-          <span class="tag tag-red">BlackDuck</span>
-          <span class="tag tag-red">DAST</span>
-          <span class="tag tag-red">SonarQube</span>
-          <span class="tag tag-red">GDPR / CCPA / CPRA</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
-        <div class="skill-cat-header">
-          <i class="fas fa-infinity"></i>
-          <span>DevOps &amp; CI/CD</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-orange">Airflow DAGs</span>
-          <span class="tag tag-orange">GitLab CI</span>
-          <span class="tag tag-orange">Jenkins</span>
-          <span class="tag tag-orange">Git</span>
-          <span class="tag tag-orange">Docker</span>
-          <span class="tag tag-orange">Kubernetes</span>
-          <span class="tag tag-orange">Kafka</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="350">
-        <div class="skill-cat-header">
-          <i class="fas fa-database"></i>
-          <span>Databases</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-yellow">Oracle</span>
-          <span class="tag tag-yellow">MSSQL</span>
-          <span class="tag tag-yellow">MySQL</span>
-          <span class="tag tag-yellow">PostgreSQL</span>
-          <span class="tag tag-yellow">MongoDB</span>
-          <span class="tag tag-yellow">BigQuery</span>
-        </div>
-      </div>
-
-      <div class="skill-category" data-aos="fade-up" data-aos-delay="400">
-        <div class="skill-cat-header">
-          <i class="fas fa-chart-bar"></i>
-          <span>Visualization &amp; Analytics</span>
-        </div>
-        <div class="skill-tags">
-          <span class="tag tag-pink">Tableau</span>
-          <span class="tag tag-pink">Qlik</span>
-          <span class="tag tag-pink">Splunk</span>
-          <span class="tag tag-pink">Logstash</span>
-          <span class="tag tag-pink">ETL Development</span>
-          <span class="tag tag-pink">BI Integration</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      EXPERIENCE SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="experience" class="section experience-section">
-  <div class="container">
-    <div class="section-header" data-aos="fade-up">
-      <span class="section-tag">// work history</span>
-      <h2 class="section-title">Professional Experience</h2>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">// work history</span>
+            <h2 class="section-title">Professional Experience</h2>
+        </div>
+
+        <div class="timeline">
+            <!-- Verizon - Principal Engineer Data Governance -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">
+                                Principal Engineer — Data Governance
+                            </h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Verizon
+                                Wireless</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Jan 2021 – Dec
+                                2025</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i> Blue
+                                Bell, PA</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Designed, curated, and published enterprise-grade
+                            datasets into BigQuery; registered assets in
+                            BigQuery Data Catalog enabling enriched metadata,
+                            lineage tracking, and seamless BI integration.
+                        </li>
+                        <li>
+                            Led modernization of compliance infrastructure by
+                            deploying an enterprise Application Data
+                            Classification system, enforcing standardized
+                            handling of regulated data.
+                        </li>
+                        <li>
+                            Launched a self-service portal for enterprise Data
+                            Catalog users, accelerating data discovery and
+                            governance workflows through rapid 2-week
+                            implementation.
+                        </li>
+                        <li>
+                            Developed Python automation scripts as modular
+                            components for metadata processing acceleration and
+                            workflow automation.
+                        </li>
+                        <li>
+                            Hands-on deployment of custom AI/ML models for
+                            large-scale data cataloging solutions.
+                        </li>
+                        <li>
+                            Served as Alternative Custodian, Security Focal
+                            Point (SFP), and Responsible Compliance Officer
+                            (RCO) for VAST infrastructure.
+                        </li>
+                        <li>
+                            Owned vulnerability lifecycle management across
+                            BlackDuck, Fortify, DAST, SonarQube, and DevOps scan
+                            ecosystems.
+                        </li>
+                        <li>
+                            Implemented Privileged Access Management (PAM)
+                            controls aligned with CyberArk principles.
+                        </li>
+                        <li>
+                            Consolidated data classification applications
+                            following GDPR, CPRA, CCPA, and CPNI privacy laws.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>BigQuery</span><span>GCP</span><span>Python</span
+                        ><span>AI/ML</span> <span>CyberArk</span
+                        ><span>DevSecOps</span><span>Data Governance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verizon - Manager BI -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">
+                                Manager — Business Intelligence
+                            </h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Verizon
+                                Wireless</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Jan 2019 – Dec
+                                2020</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i>
+                                Bedminster, NJ</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Managed BI analysts and developers, setting
+                            standards for data quality, governance, and
+                            delivery.
+                        </li>
+                        <li>
+                            Designed and developed a complete web-based portal
+                            ingesting third-party raw CSV data and rendering
+                            responsive, graphical BI reports.
+                        </li>
+                        <li>
+                            Built Logstash ingestion pipelines to feed curated
+                            data into Splunk for monitoring, auditability, and
+                            operational analytics.
+                        </li>
+                        <li>
+                            Drove development of outage-mitigation use cases
+                            with trigger-based alerting and automated detection
+                            workflows.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>Splunk</span><span>Logstash</span><span>BI</span
+                        ><span>ETL</span><span>Flask</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verizon - Principal DevOps -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">
+                                Principal Engineer — DevOps
+                            </h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Verizon
+                                Wireless</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Sep 2017 – Dec
+                                2018</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i>
+                                Bedminster, NJ</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Developed a standalone Python-based Verizon-themed
+                            portal with a REST API backend.
+                        </li>
+                        <li>
+                            Automated CI/CD workflows using Jenkins and GitLab
+                            CI for production-grade deployments.
+                        </li>
+                        <li>
+                            Engineered custom Shell scripts to orchestrate
+                            ingestion workflows, improving ETL reliability.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>Python</span><span>Jenkins</span
+                        ><span>GitLab CI</span><span>REST APIs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verizon - Senior Web Developer -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">
+                                Senior Web Application Developer
+                            </h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Verizon
+                                Wireless</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Aug 2015 – Sep
+                                2017</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i>
+                                Branchburg, NJ</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Took ownership of full-stack portal; enhanced UI
+                            with responsive Bootstrap modules.
+                        </li>
+                        <li>
+                            Enhanced backend automation to process raw data into
+                            full-fledged reporting with visual aids.
+                        </li>
+                        <li>
+                            Integrated email &amp; text messaging systems for
+                            automated weekly reporting.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>Full Stack</span><span>Bootstrap</span
+                        ><span>Python</span><span>JavaScript</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LRN Corporation -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">
+                                Senior Software Engineer
+                            </h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> LRN
+                                Corporation</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Nov 2014 – Aug
+                                2015</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i> Los
+                                Angeles, CA</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Built Zend Framework-based web applications for
+                            online training courses with cross-browser
+                            compatibility.
+                        </li>
+                        <li>
+                            Worked in Agile (Scrum) environment with regular
+                            sprint deliverables and AngularJS integration.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>PHP</span><span>Zend Framework</span
+                        ><span>AngularJS</span><span>jQuery</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Olympus -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">Lead Web Developer</h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Olympus</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Nov 2012 – Nov
+                                2014</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i> Center
+                                Valley, PA</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Lead developer for PHP-based SugarCRM customized
+                            quoting module integrated with SAP via web services.
+                        </li>
+                        <li>
+                            Built custom modules, dashlets, logic hooks, and
+                            polling scripts across the full Sugar lifecycle.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>PHP</span><span>SugarCRM</span><span>SAP</span
+                        ><span>MySQL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earlier roles condensed -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">Senior Web Developer</h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i>
+                                Auction.com</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Nov 2011 – Nov
+                                2012</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i> Irvine,
+                                CA</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Developed full-featured asset portal including
+                            in-app messaging, search with complex filters, and
+                            Oracle/MSSQL database integration.
+                        </li>
+                        <li>
+                            Integrated System Manager Portal with Exact Target
+                            for automated Emails and SMS.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>PHP</span><span>Oracle</span><span>MSSQL</span
+                        ><span>jQuery</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <div class="timeline-title-group">
+                            <h3 class="timeline-role">Web Developer</h3>
+                            <span class="timeline-company"
+                                ><i class="fas fa-building"></i> Golfsmith
+                                International</span
+                            >
+                        </div>
+                        <div class="timeline-meta">
+                            <span class="timeline-period"
+                                ><i class="fas fa-calendar"></i> Jan 2011 – Nov
+                                2011</span
+                            >
+                            <span class="timeline-location"
+                                ><i class="fas fa-map-marker-alt"></i> Austin,
+                                TX</span
+                            >
+                        </div>
+                    </div>
+                    <ul class="timeline-bullets">
+                        <li>
+                            Developed Gsign internal site for creating,
+                            managing, and printing price tags across all retail
+                            stores.
+                        </li>
+                        <li>
+                            Performed data migration using Pentaho and created
+                            stored procedures for price listing and reporting.
+                        </li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>PHP</span><span>Oracle</span><span>MSSQL</span
+                        ><span>Pentaho</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end .timeline -->
     </div>
-
-    <div class="timeline">
-
-      <!-- Verizon - Principal Engineer Data Governance -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Principal Engineer — Data Governance</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Verizon Wireless</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Jan 2021 – Dec 2025</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Blue Bell, PA</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Designed, curated, and published enterprise-grade datasets into BigQuery; registered assets in BigQuery Data Catalog enabling enriched metadata, lineage tracking, and seamless BI integration.</li>
-            <li>Led modernization of compliance infrastructure by deploying an enterprise Application Data Classification system, enforcing standardized handling of regulated data.</li>
-            <li>Launched a self-service portal for enterprise Data Catalog users, accelerating data discovery and governance workflows through rapid 2-week implementation.</li>
-            <li>Developed Python automation scripts as modular components for metadata processing acceleration and workflow automation.</li>
-            <li>Hands-on deployment of custom AI/ML models for large-scale data cataloging solutions.</li>
-            <li>Served as Alternative Custodian, Security Focal Point (SFP), and Responsible Compliance Officer (RCO) for VAST infrastructure.</li>
-            <li>Owned vulnerability lifecycle management across BlackDuck, Fortify, DAST, SonarQube, and DevOps scan ecosystems.</li>
-            <li>Implemented Privileged Access Management (PAM) controls aligned with CyberArk principles.</li>
-            <li>Consolidated data classification applications following GDPR, CPRA, CCPA, and CPNI privacy laws.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>BigQuery</span><span>GCP</span><span>Python</span><span>AI/ML</span>
-            <span>CyberArk</span><span>DevSecOps</span><span>Data Governance</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verizon - Manager BI -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Manager — Business Intelligence</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Verizon Wireless</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Jan 2019 – Dec 2020</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Bedminster, NJ</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Managed BI analysts and developers, setting standards for data quality, governance, and delivery.</li>
-            <li>Designed and developed a complete web-based portal ingesting third-party raw CSV data and rendering responsive, graphical BI reports.</li>
-            <li>Built Logstash ingestion pipelines to feed curated data into Splunk for monitoring, auditability, and operational analytics.</li>
-            <li>Drove development of outage-mitigation use cases with trigger-based alerting and automated detection workflows.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>Splunk</span><span>Logstash</span><span>BI</span><span>ETL</span><span>Flask</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verizon - Principal DevOps -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Principal Engineer — DevOps</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Verizon Wireless</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Sep 2017 – Dec 2018</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Bedminster, NJ</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Developed a standalone Python-based Verizon-themed portal with a REST API backend.</li>
-            <li>Automated CI/CD workflows using Jenkins and GitLab CI for production-grade deployments.</li>
-            <li>Engineered custom Shell scripts to orchestrate ingestion workflows, improving ETL reliability.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>Python</span><span>Jenkins</span><span>GitLab CI</span><span>REST APIs</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verizon - Senior Web Developer -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Senior Web Application Developer</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Verizon Wireless</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Aug 2015 – Sep 2017</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Branchburg, NJ</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Took ownership of full-stack portal; enhanced UI with responsive Bootstrap modules.</li>
-            <li>Enhanced backend automation to process raw data into full-fledged reporting with visual aids.</li>
-            <li>Integrated email &amp; text messaging systems for automated weekly reporting.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>Full Stack</span><span>Bootstrap</span><span>Python</span><span>JavaScript</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- LRN Corporation -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Senior Software Engineer</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> LRN Corporation</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Nov 2014 – Aug 2015</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Los Angeles, CA</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Built Zend Framework-based web applications for online training courses with cross-browser compatibility.</li>
-            <li>Worked in Agile (Scrum) environment with regular sprint deliverables and AngularJS integration.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>PHP</span><span>Zend Framework</span><span>AngularJS</span><span>jQuery</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Olympus -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Lead Web Developer</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Olympus</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Nov 2012 – Nov 2014</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Center Valley, PA</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Lead developer for PHP-based SugarCRM customized quoting module integrated with SAP via web services.</li>
-            <li>Built custom modules, dashlets, logic hooks, and polling scripts across the full Sugar lifecycle.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>PHP</span><span>SugarCRM</span><span>SAP</span><span>MySQL</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Earlier roles condensed -->
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Senior Web Developer</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Auction.com</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Nov 2011 – Nov 2012</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Irvine, CA</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Developed full-featured asset portal including in-app messaging, search with complex filters, and Oracle/MSSQL database integration.</li>
-            <li>Integrated System Manager Portal with Exact Target for automated Emails and SMS.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>PHP</span><span>Oracle</span><span>MSSQL</span><span>jQuery</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item" data-aos="fade-up">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header">
-            <div class="timeline-title-group">
-              <h3 class="timeline-role">Web Developer</h3>
-              <span class="timeline-company"><i class="fas fa-building"></i> Golfsmith International</span>
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-period"><i class="fas fa-calendar"></i> Jan 2011 – Nov 2011</span>
-              <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Austin, TX</span>
-            </div>
-          </div>
-          <ul class="timeline-bullets">
-            <li>Developed Gsign internal site for creating, managing, and printing price tags across all retail stores.</li>
-            <li>Performed data migration using Pentaho and created stored procedures for price listing and reporting.</li>
-          </ul>
-          <div class="timeline-tags">
-            <span>PHP</span><span>Oracle</span><span>MSSQL</span><span>Pentaho</span>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end .timeline -->
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      CERTIFICATIONS & EDUCATION SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="certs" class="section certs-section">
-  <div class="container">
-    <div class="section-header" data-aos="fade-up">
-      <span class="section-tag">// credentials</span>
-      <h2 class="section-title">Certifications &amp; Education</h2>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">// credentials</span>
+            <h2 class="section-title">Certifications &amp; Education</h2>
+        </div>
+
+        <div class="certs-edu-grid">
+            <!-- Certifications -->
+            <div class="certs-column" data-aos="fade-right">
+                <h3 class="column-title">
+                    <i class="fas fa-certificate"></i> Certifications
+                </h3>
+                <div class="cert-cards">
+                    <div class="cert-card featured">
+                        <div class="cert-icon gcp">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Google Cloud Certified</span
+                            >
+                            <span class="cert-sub"
+                                >Associate Cloud Engineer</span
+                            >
+                        </div>
+                        <div class="cert-badge">Verified</div>
+                    </div>
+                    <div class="cert-card featured">
+                        <div class="cert-icon gcp">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Google Cloud Certified</span
+                            >
+                            <span class="cert-sub">Generative AI Leader</span>
+                        </div>
+                        <div class="cert-badge">Verified</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon google">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Google Prompting Essentials</span
+                            >
+                            <span class="cert-sub">Specialization</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon security">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Verizon Cyber Advocate</span
+                            >
+                            <span class="cert-sub">Internal Certification</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon security">
+                            <i class="fab fa-slack"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Slack Security Awareness</span
+                            >
+                            <span class="cert-sub">Certified</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon security">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name">Cyber Health Level 4</span>
+                            <span class="cert-sub"
+                                >Beginner &amp; Intermediate</span
+                            >
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon security">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <div class="cert-info">
+                            <span class="cert-name"
+                                >Cyber Escape Room Level 4</span
+                            >
+                            <span class="cert-sub">Certified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="edu-column" data-aos="fade-left">
+                <h3 class="column-title">
+                    <i class="fas fa-graduation-cap"></i> Education
+                </h3>
+                <div class="edu-cards">
+                    <div class="edu-card">
+                        <div class="edu-degree">Master of Science</div>
+                        <div class="edu-field">
+                            Computer Information Systems
+                        </div>
+                        <div class="edu-school">
+                            <i class="fas fa-university"></i> Bellevue
+                            University
+                        </div>
+                        <div class="edu-meta">
+                            Bellevue, NE &nbsp;•&nbsp; 2013
+                        </div>
+                    </div>
+                    <div class="edu-card">
+                        <div class="edu-degree">Bachelor of Science</div>
+                        <div class="edu-field">
+                            Management Information Systems
+                        </div>
+                        <div class="edu-school">
+                            <i class="fas fa-university"></i> Northwest Missouri
+                            State University
+                        </div>
+                        <div class="edu-meta">
+                            Maryville, MO &nbsp;•&nbsp; 2009
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Achievements -->
+                <h3 class="column-title" style="margin-top: 2.5rem">
+                    <i class="fas fa-trophy"></i> Key Achievements
+                </h3>
+                <div class="achievements-list">
+                    <div class="achievement-item">
+                        <div class="ach-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <p>
+                            Implemented enterprise-wide lineage solution
+                            spanning
+                            <strong>200+ critical pipelines</strong> across
+                            network, billing, and customer analytics platforms.
+                        </p>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="ach-icon"><i class="fas fa-bug"></i></div>
+                        <p>
+                            Reduced data quality incidents by
+                            <strong>30%</strong> through deployment of automated
+                            DQ rules and anomaly detection.
+                        </p>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="ach-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <p>
+                            Drove standardization of customer identifiers, KPIs,
+                            and taxonomies across
+                            <strong
+                                >Verizon Consumer and Verizon Business
+                                Groups</strong
+                            >.
+                        </p>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="ach-icon"><i class="fas fa-robot"></i></div>
+                        <p>
+                            Led
+                            <strong>AI/ML governance initiatives</strong>
+                            improving model transparency and reducing
+                            data-related model failures.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="certs-edu-grid">
-
-      <!-- Certifications -->
-      <div class="certs-column" data-aos="fade-right">
-        <h3 class="column-title"><i class="fas fa-certificate"></i> Certifications</h3>
-        <div class="cert-cards">
-          <div class="cert-card featured">
-            <div class="cert-icon gcp"><i class="fab fa-google"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Google Cloud Certified</span>
-              <span class="cert-sub">Associate Cloud Engineer</span>
-            </div>
-            <div class="cert-badge">Verified</div>
-          </div>
-          <div class="cert-card featured">
-            <div class="cert-icon gcp"><i class="fab fa-google"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Google Cloud Certified</span>
-              <span class="cert-sub">Generative AI Leader</span>
-            </div>
-            <div class="cert-badge">Verified</div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-icon google"><i class="fas fa-brain"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Google Prompting Essentials</span>
-              <span class="cert-sub">Specialization</span>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-icon security"><i class="fas fa-shield-alt"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Verizon Cyber Advocate</span>
-              <span class="cert-sub">Internal Certification</span>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-icon security"><i class="fab fa-slack"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Slack Security Awareness</span>
-              <span class="cert-sub">Certified</span>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-icon security"><i class="fas fa-heartbeat"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Cyber Health Level 4</span>
-              <span class="cert-sub">Beginner &amp; Intermediate</span>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-icon security"><i class="fas fa-door-open"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Cyber Escape Room Level 4</span>
-              <span class="cert-sub">Certified</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Education -->
-      <div class="edu-column" data-aos="fade-left">
-        <h3 class="column-title"><i class="fas fa-graduation-cap"></i> Education</h3>
-        <div class="edu-cards">
-          <div class="edu-card">
-            <div class="edu-degree">Master of Science</div>
-            <div class="edu-field">Computer Information Systems</div>
-            <div class="edu-school"><i class="fas fa-university"></i> Bellevue University</div>
-            <div class="edu-meta">Bellevue, NE &nbsp;•&nbsp; 2013</div>
-          </div>
-          <div class="edu-card">
-            <div class="edu-degree">Bachelor of Science</div>
-            <div class="edu-field">Management Information Systems</div>
-            <div class="edu-school"><i class="fas fa-university"></i> Northwest Missouri State University</div>
-            <div class="edu-meta">Maryville, MO &nbsp;•&nbsp; 2009</div>
-          </div>
-        </div>
-
-        <!-- Key Achievements -->
-        <h3 class="column-title" style="margin-top:2.5rem;"><i class="fas fa-trophy"></i> Key Achievements</h3>
-        <div class="achievements-list">
-          <div class="achievement-item">
-            <div class="ach-icon"><i class="fas fa-project-diagram"></i></div>
-            <p>Implemented enterprise-wide lineage solution spanning <strong>200+ critical pipelines</strong> across network, billing, and customer analytics platforms.</p>
-          </div>
-          <div class="achievement-item">
-            <div class="ach-icon"><i class="fas fa-bug"></i></div>
-            <p>Reduced data quality incidents by <strong>30%</strong> through deployment of automated DQ rules and anomaly detection.</p>
-          </div>
-          <div class="achievement-item">
-            <div class="ach-icon"><i class="fas fa-users-cog"></i></div>
-            <p>Drove standardization of customer identifiers, KPIs, and taxonomies across <strong>Verizon Consumer and Verizon Business Groups</strong>.</p>
-          </div>
-          <div class="achievement-item">
-            <div class="ach-icon"><i class="fas fa-robot"></i></div>
-            <p>Led <strong>AI/ML governance initiatives</strong> improving model transparency and reducing data-related model failures.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
 </section>
-
 
 <!-- ════════════════════════════════════════════════════════════
      CONTACT SECTION
 ════════════════════════════════════════════════════════════ -->
 <section id="contact" class="section contact-section">
-  <div class="container">
-    <div class="section-header" data-aos="fade-up">
-      <span class="section-tag">// get in touch</span>
-      <h2 class="section-title">Contact Me</h2>
-      <p class="section-sub">Have an opportunity or want to collaborate? Drop me a message!</p>
-    </div>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">// get in touch</span>
+            <h2 class="section-title">Contact Me</h2>
+            <p class="section-sub">
+                Have an opportunity or want to collaborate? Drop me a message!
+            </p>
+        </div>
 
-    <div class="contact-grid">
-
-      <!-- Contact Info -->
-      <div class="contact-info" data-aos="fade-right">
-        <div class="contact-card">
-          <i class="fas fa-envelope"></i>
-          <div>
-            <span class="contact-label">Email</span>
-            <a href="mailto:nirajbjk@gmail.com">nirajbjk@gmail.com</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <i class="fas fa-phone"></i>
-          <div>
-            <span class="contact-label">Phone</span>
-            <a href="tel:2026564725">202-656-4725</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <i class="fas fa-map-marker-alt"></i>
-          <div>
-            <span class="contact-label">Location</span>
-            <span>Collegeville, PA</span>
-          </div>
-        </div>
-        <div class="contact-card">
-          <i class="fas fa-briefcase"></i>
-          <div>
-            <span class="contact-label">Open To</span>
-            <span>Senior &amp; Principal-level roles</span>
-          </div>
-        </div>
-        <div class="contact-social">
-          <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-btn linkedin">
-            <i class="fab fa-linkedin"></i> LinkedIn
-          </a>
-          <a href="https://github.com" target="_blank" rel="noopener" class="social-btn github">
-            <i class="fab fa-github"></i> GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Contact Form -->
-      <div class="contact-form-wrap" data-aos="fade-left">
-        <form id="contactForm" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Full Name <span class="required">*</span></label>
-              <input type="text" id="name" name="name" placeholder="John Doe" required />
-              <span class="field-error" id="nameError"></span>
+        <div class="contact-grid">
+            <!-- Contact Info -->
+            <div class="contact-info" data-aos="fade-right">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:nirajbjk@gmail.com"
+                            >nirajbjk@gmail.com</a
+                        >
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:2026564725">202-OK-NIRAJ</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <span class="contact-label">Location</span>
+                        <span>USA</span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-briefcase"></i>
+                    <div>
+                        <span class="contact-label">Open To</span>
+                        <span>Senior &amp; Principal-level roles</span>
+                    </div>
+                </div>
+                <div class="contact-social">
+                    <a
+                        href="https://linkedin.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="social-btn linkedin"
+                    >
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a
+                        href="https://github.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="social-btn github"
+                    >
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="email">Email Address <span class="required">*</span></label>
-              <input type="email" id="email" name="email" placeholder="john@example.com" required />
-              <span class="field-error" id="emailError"></span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="subject">Subject <span class="required">*</span></label>
-            <input type="text" id="subject" name="subject" placeholder="Job Opportunity / Collaboration / Hello!" required />
-            <span class="field-error" id="subjectError"></span>
-          </div>
-          <div class="form-group">
-            <label for="message">Message <span class="required">*</span></label>
-            <textarea id="message" name="message" rows="6" placeholder="Tell me about your opportunity or project..." required></textarea>
-            <span class="field-error" id="messageError"></span>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
-            <i class="fas fa-paper-plane"></i>
-            <span>Send Message</span>
-          </button>
-          <div id="formStatus" class="form-status" role="alert"></div>
-        </form>
-      </div>
 
+            <!-- Contact Form -->
+            <div class="contact-form-wrap" data-aos="fade-left">
+                <form id="contactForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name"
+                                >Full Name
+                                <span class="required">*</span></label
+                            >
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="John Doe"
+                                required
+                            />
+                            <span class="field-error" id="nameError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"
+                                >Email Address
+                                <span class="required">*</span></label
+                            >
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="john@example.com"
+                                required
+                            />
+                            <span class="field-error" id="emailError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject"
+                            >Subject <span class="required">*</span></label
+                        >
+                        <input
+                            type="text"
+                            id="subject"
+                            name="subject"
+                            placeholder="Job Opportunity / Collaboration / Hello!"
+                            required
+                        />
+                        <span class="field-error" id="subjectError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message"
+                            >Message <span class="required">*</span></label
+                        >
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="6"
+                            placeholder="Tell me about your opportunity or project..."
+                            required
+                        ></textarea>
+                        <span class="field-error" id="messageError"></span>
+                    </div>
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-full"
+                        id="submitBtn"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Message</span>
+                    </button>
+                    <div id="formStatus" class="form-status" role="alert"></div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 {% endblock %}

@@ -1,0 +1,14 @@
+# ── ConfigMap ──────────────────────────────────────────────────────
+# Non-sensitive configuration injected into all pods as environment
+# variables. Edit GMAIL_USER if deploying under a different email.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portfolio-config
+  namespace: portfolio
+  labels:
+    app: portfolio
+data:
+  GMAIL_USER: "nirajbjk@gmail.com"
+  FLASK_ENV: "production"
+  PYTHONUNBUFFERED: "1"

@@ -1,0 +1,49 @@
+# ── Ingress ────────────────────────────────────────────────────────
+# Optional but recommended for production. Routes HTTP/HTTPS traffic
+# to the portfolio service via a domain name instead of a raw IP.
+#
+# Prerequisites:
+#   An Ingress controller must be installed. Install NGINX Ingress:
+#     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml
+#
+# Then update the host field below with your actual domain name.
+# For free SSL (HTTPS), also install cert-manager:
+#   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio-ingress
+  namespace: portfolio
+  labels:
+    app: portfolio
+  annotations:
+    # Use the NGINX ingress controller
+    kubernetes.io/ingress.class: "nginx"
+    # Redirect all HTTP to HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Let cert-manager handle SSL certificate automatically
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # Enable gzip compression for faster page loads
+    nginx.ingress.kubernetes.io/enable-gzip: "true"
+    # Proxy timeouts
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+spec:
+  # ── TLS (HTTPS) — replace with your actual domain ───────────────
+  tls:
+    - hosts:
+        - your-domain.com              # ← Replace with your domain
+      secretName: portfolio-tls        # cert-manager stores cert here
+
+  # ── Routing rules ────────────────────────────────────────────────
+  rules:
+    - host: your-domain.com           # ← Replace with your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio-service
+                port:
+                  number: 80

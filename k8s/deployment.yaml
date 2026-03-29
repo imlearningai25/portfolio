@@ -1,0 +1,95 @@
+# ── Deployment ─────────────────────────────────────────────────────
+# Runs 3 replicas of the portfolio Flask app.
+# Kubernetes spreads them across nodes automatically (load balancing).
+#
+# IMAGE_PLACEHOLDER is replaced by Jenkins during CI/CD with the
+# actual versioned tag (e.g. imlearningai25/portfolio:42).
+# For manual deploys, replace IMAGE_PLACEHOLDER with your image tag.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-deployment
+  namespace: portfolio
+  labels:
+    app: portfolio
+spec:
+  replicas: 3                          # Start with 3 pods (HPA will scale up/down)
+  selector:
+    matchLabels:
+      app: portfolio
+  strategy:
+    type: RollingUpdate                # Zero-downtime deployments
+    rollingUpdate:
+      maxSurge: 1                      # At most 1 extra pod during update
+      maxUnavailable: 0                # Never drop below desired replica count
+
+  template:
+    metadata:
+      labels:
+        app: portfolio
+    spec:
+      # Spread pods evenly across different nodes for high availability
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: portfolio
+
+      containers:
+        - name: portfolio
+          image: nirajbjk/portfolio-portfolio:latest      # Replaced by Jenkins (e.g. imlearningai25/portfolio:42)
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 5000
+              name: http
+
+          # ── Environment from ConfigMap (non-sensitive) ───────────
+          envFrom:
+            - configMapRef:
+                name: portfolio-config
+
+          # ── Environment from Secret (sensitive) ──────────────────
+          env:
+            - name: GMAIL_APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: GMAIL_APP_PASSWORD
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: SECRET_KEY
+
+          # ── Resource limits (prevent one pod hogging the node) ───
+          resources:
+            requests:
+              cpu: "100m"              # 0.1 CPU core guaranteed
+              memory: "128Mi"          # 128 MB RAM guaranteed
+            limits:
+              cpu: "500m"              # Max 0.5 CPU core
+              memory: "256Mi"          # Max 256 MB RAM
+
+          # ── Liveness probe (restart pod if unhealthy) ─────────────
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 15    # Wait 15s before first check
+            periodSeconds: 20          # Check every 20s
+            failureThreshold: 3        # Restart after 3 failures
+
+          # ── Readiness probe (only send traffic when ready) ────────
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+
+      # Graceful shutdown — give Gunicorn time to finish requests
+      terminationGracePeriodSeconds: 30
