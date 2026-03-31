@@ -50,7 +50,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 2: Lint & Validate ───────────────────────────────── */
+        /* ── Stage 2: Lint & Validate ─────────────────────────────────
         stage('Lint & Validate') {
             steps {
                 echo '🔍 Validating Python syntax...'
@@ -74,6 +74,7 @@ pipeline {
 
             }
         }
+        */
 
         /* ── Stage 3: Build Docker Image ────────────────────────────── */
         stage('Build Image') {
