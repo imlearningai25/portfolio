@@ -12,7 +12,9 @@
 
 pipeline {
 
-    agent any
+    agent {
+        docker { image 'lachlanevenson/k8s-kubectl:latest' }
+    }
 
     /* ── Global environment variables ─────────────────────────────── */
     environment {
