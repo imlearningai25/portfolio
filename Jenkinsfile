@@ -122,6 +122,8 @@ pipeline {
 
                     sh """
 
+                        kubectl config view
+
 
 
                         # 1. Apply namespace first
