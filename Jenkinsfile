@@ -122,9 +122,7 @@ pipeline {
 
                     sh """
 
-                        kubectl get pods
 
-                        export KUBECONFIG=\$KUBECONFIG
 
                         # 1. Apply namespace first
                         kubectl apply -f k8s/namespace.yaml
