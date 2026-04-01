@@ -119,6 +119,7 @@ pipeline {
                     file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
+                    sh " echo kubeconfig: \$KUBECONFIG"
                     sh """
                         export KUBECONFIG=\$KUBECONFIG
 
