@@ -116,7 +116,7 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
-                    file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
+
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
 
