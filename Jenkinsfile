@@ -59,12 +59,11 @@ pipeline {
                     echo "✅ app.py syntax OK"
                 '''
                 echo '🔍 Validating Kubernetes manifests...'
-                //sh 'apt install python3.13-venv -y'
-                //sh 'python3 -m venv venv'
-                //sh '. venv/bin/activate'
+                sh 'apt install python3.13-venv -y'
+                sh 'python3 -m venv venv'
+                sh '. venv/bin/activate'
 
-                //sh 'pip install PyYAML --break-system-packages'
-                sh 'pip install --user PyYAML'
+                sh 'pip install PyYAML --break-system-packages'
                 sh '''
                     for f in k8s/*.yaml; do
                         python3 -c "import yaml, sys; yaml.safe_load_all(open('$f'))" \
