@@ -121,7 +121,7 @@ pipeline {
                 ]) {
 
                     sh """
-                        kubectl config view
+
                         kubectl get pods
 
                         export KUBECONFIG=\$KUBECONFIG
