@@ -114,16 +114,14 @@ pipeline {
         /* ── Stage 5: Deploy to Kubernetes ──────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
-                echo "kc - ${KUBECONFIG_CREDS}"
-                echo 'gsi - ${GMAIL_SECRET_ID}'
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
                     file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
-                    sh " echo kubeconfig: ${KUBECONFIG}"
-                    sh """
 
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
 
                         # 1. Apply namespace first
                         kubectl apply -f k8s/namespace.yaml
@@ -154,7 +152,7 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-
+                        export KUBECONFIG=\$KUBECONFIG
 
                         # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
