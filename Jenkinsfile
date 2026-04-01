@@ -12,9 +12,7 @@
 
 pipeline {
 
-    agent {
-        docker { image 'lachlanevenson/k8s-kubectl:latest' }
-    }
+    agent any
 
     /* ── Global environment variables ─────────────────────────────── */
     environment {
@@ -52,7 +50,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 2: Lint & Validate ─────────────────────────────────
+        /* ── Stage 2: Lint & Validate ───────────────────────────────── */
         stage('Lint & Validate') {
             steps {
                 echo '🔍 Validating Python syntax...'
@@ -76,7 +74,6 @@ pipeline {
 
             }
         }
-        */
 
         /* ── Stage 3: Build Docker Image ────────────────────────────── */
         stage('Build Image') {
