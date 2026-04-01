@@ -59,7 +59,7 @@ pipeline {
                     echo "✅ app.py syntax OK"
                 '''
                 echo '🔍 Validating Kubernetes manifests...'
-                sh 'apt install python3.13-venv -y'
+                //sh 'apt install python3.13-venv -y'
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
 
