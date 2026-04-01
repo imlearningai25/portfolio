@@ -60,8 +60,8 @@ pipeline {
                 '''
                 echo '🔍 Validating Kubernetes manifests...'
                 //sh 'apt install python3.13-venv -y'
-                sh 'python3 -m venv venv'
-                sh '. venv/bin/activate'
+                //sh 'python3 -m venv venv'
+                //sh '. venv/bin/activate'
 
                 sh 'pip install PyYAML --break-system-packages'
                 sh '''
