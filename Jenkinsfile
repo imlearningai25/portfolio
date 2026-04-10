@@ -121,6 +121,9 @@ pipeline {
                 ]) {
 
                     sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        HOST_IP=\$(ip route | awk 'NR==1{print \$3}')
+                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
 
                         kubectl config view
 
@@ -156,6 +159,8 @@ pipeline {
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
                         export KUBECONFIG=\$KUBECONFIG
+                        HOST_IP=\$(ip route | awk 'NR==1{print \$3}')
+                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
 
                         # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
