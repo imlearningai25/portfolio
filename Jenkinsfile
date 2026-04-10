@@ -111,7 +111,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 5: Deploy to Kubernetes ──────────────────────────── */
+        /* ── Stage 5: Deploy to Kubernetes k8s ──────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
