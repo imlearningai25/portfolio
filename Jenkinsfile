@@ -111,32 +111,24 @@ pipeline {
             }
         }
 
-        /* ── Stage 5: Deploy to Kubernetes ──────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
-
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
-
                     sh """
                         export KUBECONFIG=\$KUBECONFIG
                         kubectl config view
 
-
-
-                        # 1. Apply namespace first
                         kubectl apply -f k8s/namespace.yaml
-
-                        # 2. Apply ConfigMap and Secret
                         kubectl apply -f k8s/configmap.yaml
+
                         kubectl create secret generic portfolio-secret \
-                            --from-literal=GMAIL_APP_PASSWORD=\$GMAIL_PASS \
+                            --from-literal="GMAIL_APP_PASSWORD=\$GMAIL_PASS" \
                             --namespace=${K8S_NAMESPACE} \
                             --dry-run=client -o yaml | kubectl apply -f -
 
-                        # 3. Update the image tag in deployment and apply
                         sed -i 's|IMAGE_PLACEHOLDER|${IMAGE_VERSIONED}|g' k8s/deployment.yaml
                         kubectl apply -f k8s/deployment.yaml
                         kubectl apply -f k8s/service.yaml
