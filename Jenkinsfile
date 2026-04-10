@@ -147,20 +147,17 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-                        export KUBECONFIG=\$KUBECONFIG
-
-                        # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
                             --namespace=${K8S_NAMESPACE} \
                             --timeout=180s
 
-                        echo "\\n── Pod status ──────────────────────────────"
+                        echo "── Pod status ──────────────────────────────"
                         kubectl get pods --namespace=${K8S_NAMESPACE} -o wide
 
-                        echo "\\n── Service & External IP ───────────────────"
+                        echo "── Service & External IP ───────────────────"
                         kubectl get svc --namespace=${K8S_NAMESPACE}
 
-                        echo "\\n── HPA status ──────────────────────────────"
+                        echo "── HPA status ──────────────────────────────"
                         kubectl get hpa --namespace=${K8S_NAMESPACE}
                     """
                 }
