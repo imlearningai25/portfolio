@@ -127,8 +127,7 @@ pipeline {
 
 
                         # 1. Apply namespace first
-                        sed "s/127.0.0.1/172.17.0.1/g" $KUBECONFIG > /tmp/kubeconfig-fixed
-                        export KUBECONFIG=/tmp/kubeconfig-fixed
+
                         kubectl apply -f k8s/namespace.yaml
 
                         # 2. Apply ConfigMap and Secret
@@ -157,8 +156,7 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-                        sed "s/127.0.0.1/172.17.0.1/g" $KUBECONFIG > /tmp/kubeconfig-fixed
-                        export KUBECONFIG=/tmp/kubeconfig-fixed
+
 
 
                         # Wait up to 3 minutes for rollout to complete
