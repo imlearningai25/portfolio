@@ -116,22 +116,25 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
-
+                    file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
 
                     sh """
-
+                        export KUBECONFIG=\$KUBECONFIG
+                        HEX=\$(awk '\$2=="00000000"{print \$3;exit}' /proc/net/route)
+                        HOST_IP=\$(printf '%d.%d.%d.%d' 0x\${HEX:6:2} 0x\${HEX:4:2} 0x\${HEX:2:2} 0x\${HEX:0:2})
+                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
 
                         kubectl config view
 
 
 
                         # 1. Apply namespace first
-                        kubectl apply -f k8s/namespace.yaml --validate=false
+                        kubectl apply -f k8s/namespace.yaml
 
                         # 2. Apply ConfigMap and Secret
-                        kubectl apply -f k8s/configmap.yaml --validate=false
+                        kubectl apply -f k8s/configmap.yaml
                         kubectl create secret generic portfolio-secret \
                             --from-literal=GMAIL_APP_PASSWORD=\$GMAIL_PASS \
                             --namespace=${K8S_NAMESPACE} \
@@ -139,10 +142,10 @@ pipeline {
 
                         # 3. Update the image tag in deployment and apply
                         sed -i 's|IMAGE_PLACEHOLDER|${IMAGE_VERSIONED}|g' k8s/deployment.yaml
-                        kubectl apply -f k8s/deployment.yaml --validate=false
-                        kubectl apply -f k8s/service.yaml --validate=false
-                        kubectl apply -f k8s/hpa.yaml --validate=false
-                        kubectl apply -f k8s/ingress.yaml --validate=false
+                        kubectl apply -f k8s/deployment.yaml
+                        kubectl apply -f k8s/service.yaml
+                        kubectl apply -f k8s/hpa.yaml
+                        kubectl apply -f k8s/ingress.yaml
 
                         echo "✅ All manifests applied"
                     """
@@ -156,8 +159,10 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-
-
+                        export KUBECONFIG=\$KUBECONFIG
+                        HEX=\$(awk '\$2=="00000000"{print \$3;exit}' /proc/net/route)
+                        HOST_IP=\$(printf '%d.%d.%d.%d' 0x\${HEX:6:2} 0x\${HEX:4:2} 0x\${HEX:2:2} 0x\${HEX:0:2})
+                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
 
                         # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
