@@ -116,15 +116,12 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
-                    file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
+
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
                 ]) {
 
                     sh """
-                        export KUBECONFIG=\$KUBECONFIG
-                        HEX=\$(awk '\$2=="00000000"{print \$3;exit}' /proc/net/route)
-                        HOST_IP=\$(printf '%d.%d.%d.%d' 0x\${HEX:6:2} 0x\${HEX:4:2} 0x\${HEX:2:2} 0x\${HEX:0:2})
-                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
+
 
                         kubectl config view
 
@@ -159,10 +156,8 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-                        export KUBECONFIG=\$KUBECONFIG
-                        HEX=\$(awk '\$2=="00000000"{print \$3;exit}' /proc/net/route)
-                        HOST_IP=\$(printf '%d.%d.%d.%d' 0x\${HEX:6:2} 0x\${HEX:4:2} 0x\${HEX:2:2} 0x\${HEX:0:2})
-                        sed -i "s|127.0.0.1|\$HOST_IP|g" \$KUBECONFIG
+
+
 
                         # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
