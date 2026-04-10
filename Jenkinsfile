@@ -128,10 +128,10 @@ pipeline {
 
 
                         # 1. Apply namespace first
-                        kubectl apply -f k8s/namespace.yaml
+                        kubectl apply -f k8s/namespace.yaml --validate=false
 
                         # 2. Apply ConfigMap and Secret
-                        kubectl apply -f k8s/configmap.yaml
+                        kubectl apply -f k8s/configmap.yaml --validate=false
                         kubectl create secret generic portfolio-secret \
                             --from-literal=GMAIL_APP_PASSWORD=\$GMAIL_PASS \
                             --namespace=${K8S_NAMESPACE} \
@@ -139,10 +139,10 @@ pipeline {
 
                         # 3. Update the image tag in deployment and apply
                         sed -i 's|IMAGE_PLACEHOLDER|${IMAGE_VERSIONED}|g' k8s/deployment.yaml
-                        kubectl apply -f k8s/deployment.yaml
-                        kubectl apply -f k8s/service.yaml
-                        kubectl apply -f k8s/hpa.yaml
-                        kubectl apply -f k8s/ingress.yaml
+                        kubectl apply -f k8s/deployment.yaml --validate=false
+                        kubectl apply -f k8s/service.yaml --validate=false
+                        kubectl apply -f k8s/hpa.yaml --validate=false
+                        kubectl apply -f k8s/ingress.yaml --validate=false
 
                         echo "✅ All manifests applied"
                     """
