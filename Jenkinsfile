@@ -111,7 +111,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 5: Deploy to Kubernetes k8s ──────────────────────────── */
+        /* ── Stage 5: Deploy to Kubernetes ──────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
@@ -121,13 +121,12 @@ pipeline {
                 ]) {
 
                     sh """
-
+                        export KUBECONFIG=\$KUBECONFIG
                         kubectl config view
 
 
 
                         # 1. Apply namespace first
-
                         kubectl apply -f k8s/namespace.yaml
 
                         # 2. Apply ConfigMap and Secret
@@ -156,8 +155,7 @@ pipeline {
                 echo '✅ Verifying deployment rollout...'
                 withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
                     sh """
-
-
+                        export KUBECONFIG=\$KUBECONFIG
 
                         # Wait up to 3 minutes for rollout to complete
                         kubectl rollout status deployment/portfolio-deployment \
