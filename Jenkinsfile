@@ -115,7 +115,8 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
-                    string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS')
+                    string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS'),
+                    string(credentialsId: "SECRET_KEY_ID", variable: 'SECRET_KEY')
                 ]) {
                     sh """
                         export KUBECONFIG=\$KUBECONFIG
@@ -126,6 +127,7 @@ pipeline {
 
                         kubectl create secret generic portfolio-secret \
                             --from-literal="GMAIL_APP_PASSWORD=\$GMAIL_PASS" \
+                            --from-literal="SECRET_KEY=\$SECRET_KEY" \
                             --namespace=${K8S_NAMESPACE} \
                             --dry-run=client -o yaml | kubectl apply -f -
 
