@@ -36,7 +36,7 @@ spec:
             - name: dashboard-provider
               mountPath: /etc/grafana/provisioning/dashboards
             - name: dashboard-portfolio
-              mountPath: /etc/grafana/provisioning/dashboards/portfolio.json
+              mountPath: /var/lib/grafana/dashboards/portfolio.json
               subPath: portfolio.json
             - name: grafana-data
               mountPath: /var/lib/grafana
