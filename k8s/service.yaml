@@ -30,4 +30,5 @@ spec:
       protocol: TCP
       port: 80                         # External port (what users hit)
       targetPort: 5000                 # Internal container port
+      nodePort: 31000                  # fixed port, never changes
   sessionAffinity: None               # Stateless — any pod can serve any request
