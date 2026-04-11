@@ -237,13 +237,16 @@ git push to GitHub
 Jenkins picks up the push (webhook)
        |
        v
-Stage 1: Checkout    -- pulls the latest code
-Stage 2: Lint        -- checks Python syntax + validates YAML files
-Stage 3: Build Image -- docker build, tagged with build number (e.g. :42)
-Stage 4: Push Image  -- docker push to Docker Hub (:42 and :latest)
-Stage 5: Deploy K8s  -- kubectl apply all manifests to the cluster
-Stage 6: Verify      -- waits for rollout to complete, shows pod status
+Stage 1: Checkout          -- pulls the latest code
+Stage 2: Lint              -- Python syntax + validates YAML (incl. k8s/monitoring/)
+Stage 3: Build Image       -- docker build, tagged with build number (e.g. :42)
+Stage 4: Push Image        -- docker push to Docker Hub (:42 and :latest)
+Stage 5: Deploy K8s        -- kubectl apply all app manifests to the cluster
+Stage 6: Deploy Monitoring -- kubectl apply Prometheus + Grafana to monitoring namespace
+Stage 7: Verify            -- waits for rollout to complete, shows pod/service/HPA status
 ```
+
+> **Monitoring deploys are idempotent** — on the first run the `monitoring` namespace and all resources are created. On every subsequent run `kubectl apply` no-ops unless a manifest actually changed.
 
 ---
 
