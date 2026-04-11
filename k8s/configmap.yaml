@@ -9,6 +9,6 @@ metadata:
   labels:
     app: portfolio
 data:
-  GMAIL_USER: "nirajbjk@gmail.com"
+  GMAIL_USER: "imlearningai25@gmail.com"
   FLASK_ENV: "production"
   PYTHONUNBUFFERED: "1"
