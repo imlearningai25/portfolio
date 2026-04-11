@@ -115,13 +115,11 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
                 withCredentials([
+                    file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS'),
                     string(credentialsId: "SECRET_KEY_ID", variable: 'SECRET_KEY')
                 ]) {
                     sh """
-                        export KUBECONFIG=\$KUBECONFIG
-                        kubectl config view
-
                         kubectl apply -f k8s/namespace.yaml
                         kubectl apply -f k8s/configmap.yaml
 
