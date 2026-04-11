@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python -m pytest tests/test_app.py -v)",
+      "Bash(pip --version)",
+      "Bash(python -m pip install prometheus-flask-exporter==0.23.1 pytest==8.2.0 --quiet)",
+      "Bash(python -m pip install Flask==3.0.3 Flask-Mail==0.10.0 python-dotenv==1.0.1 --quiet)"
+    ]
+  }
+}
