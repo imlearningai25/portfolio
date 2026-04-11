@@ -89,7 +89,6 @@ pipeline {
                         python-dotenv==1.0.1 \
                         prometheus-flask-exporter==0.23.1 \
                         pytest==8.2.0 \
-                        pytest-junit==0.1.0 \
                         --break-system-packages --quiet
 
                     python3 -m pytest tests/test_app.py -v \
