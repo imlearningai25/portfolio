@@ -27,6 +27,10 @@ spec:
     metadata:
       labels:
         app: portfolio
+      annotations:
+        prometheus.io/scrape: "true"   # Tell Prometheus to scrape this pod
+        prometheus.io/port: "5000"     # Port where /metrics is exposed
+        prometheus.io/path: "/metrics" # Path for metrics endpoint
     spec:
       # Spread pods evenly across different nodes for high availability
       topologySpreadConstraints:

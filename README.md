@@ -1,6 +1,6 @@
 # Niraj Byanjankar — Portfolio Website
 
-A professional portfolio built with **Flask**, featuring a dark tech theme, Gmail contact form, Docker containerization, Jenkins CI/CD pipeline, and Kubernetes scalable deployment with load balancing.
+A professional portfolio built with **Flask**, featuring a dark tech theme, Gmail contact form, Docker containerization, Jenkins CI/CD pipeline, Kubernetes scalable deployment with load balancing, and Prometheus + Grafana monitoring.
 
 ---
 
@@ -12,8 +12,9 @@ A professional portfolio built with **Flask**, featuring a dark tech theme, Gmai
 5. [Option C — Docker Compose](#option-c--docker-compose)
 6. [Option D — Jenkins CI/CD Pipeline](#option-d--jenkins-cicd-pipeline)
 7. [Option E — Kubernetes (Scalable + Load Balanced)](#option-e--kubernetes)
-8. [Full CI/CD + K8s Flow](#full-cicd--k8s-flow)
-9. [Environment Variables](#environment-variables)
+8. [Option F — Monitoring (Prometheus + Grafana)](#option-f--monitoring)
+9. [Full CI/CD + K8s Flow](#full-cicd--k8s-flow)
+10. [Environment Variables](#environment-variables)
 
 ---
 
@@ -21,22 +22,38 @@ A professional portfolio built with **Flask**, featuring a dark tech theme, Gmai
 
 ```
 portfolio/
-├── app.py                    <- Flask app + Gmail contact form
-├── requirements.txt          <- Python dependencies (incl. Gunicorn)
+├── app.py                    <- Flask app + Gmail contact form + /metrics endpoint
+├── requirements.txt          <- Python dependencies (incl. Gunicorn, prometheus-flask-exporter)
 ├── Dockerfile                <- Multi-stage Docker build
-├── docker-compose.yml        <- Local Docker Compose setup
+├── docker-compose.yml        <- Local Docker Compose (app + Prometheus + Grafana)
 ├── Jenkinsfile               <- Jenkins CI/CD pipeline definition
 ├── .dockerignore             <- Files excluded from Docker image
 ├── .gitignore                <- Files excluded from Git
 ├── .env.example              <- Environment variable template
+├── monitoring/
+│   ├── prometheus.yml        <- Prometheus scrape config for Docker Compose
+│   └── grafana/
+│       └── provisioning/
+│           ├── datasources/
+│           │   └── prometheus.yml    <- Auto-wires Prometheus as Grafana datasource
+│           └── dashboards/
+│               ├── dashboard.yml     <- Dashboard provider config
+│               └── portfolio.json    <- Pre-built Flask metrics dashboard
 ├── k8s/
 │   ├── namespace.yaml        <- K8s namespace (apply first)
 │   ├── configmap.yaml        <- Non-sensitive config (GMAIL_USER etc.)
 │   ├── secret.yaml           <- Secret template (do not commit real values)
-│   ├── deployment.yaml       <- 3-replica deployment with health checks
+│   ├── deployment.yaml       <- 3-replica deployment with Prometheus annotations
 │   ├── service.yaml          <- LoadBalancer service (distributes traffic)
 │   ├── hpa.yaml              <- Auto-scales pods 2-10 based on CPU/RAM
-│   └── ingress.yaml          <- Domain + HTTPS routing (optional)
+│   ├── ingress.yaml          <- Domain + HTTPS routing (optional)
+│   └── monitoring/
+│       ├── namespace.yaml          <- monitoring namespace
+│       ├── prometheus-rbac.yaml    <- ServiceAccount + ClusterRole for pod discovery
+│       ├── prometheus-configmap.yaml <- Prometheus scrape config
+│       ├── prometheus-deployment.yaml <- Prometheus pod + ClusterIP service
+│       ├── grafana-configmap.yaml  <- Grafana datasource + dashboard provisioning
+│       └── grafana-deployment.yaml <- Grafana pod + NodePort service (port 32000)
 ├── templates/
 │   ├── base.html             <- Navbar, footer, layout
 │   └── index.html            <- All portfolio sections
@@ -375,6 +392,156 @@ Traffic drops: CPU falls below 70% for 5 minutes
 
 ---
 
+## Option F — Monitoring
+
+The portfolio app exposes Prometheus metrics at `/metrics` (via `prometheus-flask-exporter`). Prometheus scrapes those metrics and Grafana visualises them in a pre-built dashboard.
+
+### What is monitored
+
+| Metric | Description |
+| ------ | ----------- |
+| `flask_http_request_total` | Total HTTP requests by method, path, status code |
+| `flask_http_request_duration_seconds` | Request latency histogram (p50 / p95 / p99) |
+| `flask_http_request_exceptions_total` | Unhandled exceptions by endpoint |
+| `app_info` | Static label with app version |
+
+### Option F1 — Docker Compose (local)
+
+The `docker-compose.yml` already includes Prometheus and Grafana alongside the app. No extra steps are needed.
+
+```bash
+# Start the full stack (app + Prometheus + Grafana)
+docker compose up -d --build
+
+# Verify all three services are running
+docker compose ps
+```
+
+| Service | URL | Credentials |
+| ------- | --- | ----------- |
+| Portfolio app | <http://localhost:5000> | — |
+| Prometheus | <http://localhost:9090> | — |
+| Grafana | <http://localhost:3000> | admin / admin |
+
+**Verify metrics are flowing:**
+
+```bash
+# Check the /metrics endpoint directly
+curl http://localhost:5000/metrics
+
+# In Prometheus UI → Status → Targets
+# The "portfolio" target should show State: UP
+```
+
+**Open the dashboard:**
+
+1. Open <http://localhost:3000> and log in with `admin / admin`
+2. Go to **Dashboards → Portfolio → Portfolio App Metrics**
+3. The dashboard auto-loads with four panels: Request Rate, Error Rate, p99 Latency, Total Requests — plus time-series graphs for status codes, latency percentiles, and per-endpoint traffic.
+
+---
+
+### Option F2 — Kubernetes
+
+#### Step 1 — Deploy the monitoring namespace and RBAC
+
+```bash
+kubectl apply -f k8s/monitoring/namespace.yaml
+kubectl apply -f k8s/monitoring/prometheus-rbac.yaml
+```
+
+The ClusterRole grants Prometheus read access to pods/endpoints/services across all namespaces so it can auto-discover scrape targets.
+
+#### Step 2 — Deploy Prometheus
+
+```bash
+kubectl apply -f k8s/monitoring/prometheus-configmap.yaml
+kubectl apply -f k8s/monitoring/prometheus-deployment.yaml
+```
+
+Prometheus uses Kubernetes pod-annotation discovery. Any pod with these annotations is automatically scraped (the portfolio deployment already has them):
+
+```yaml
+prometheus.io/scrape: "true"
+prometheus.io/port:   "5000"
+prometheus.io/path:   "/metrics"
+```
+
+#### Step 3 — Deploy Grafana
+
+```bash
+kubectl apply -f k8s/monitoring/grafana-configmap.yaml
+kubectl apply -f k8s/monitoring/grafana-deployment.yaml
+```
+
+Grafana starts with the Prometheus datasource and the Portfolio dashboard pre-loaded via provisioning ConfigMaps.
+
+#### Step 4 — Verify everything is running
+
+```bash
+# Check all monitoring pods are Running
+kubectl get pods -n monitoring
+
+# Check services
+kubectl get svc -n monitoring
+```
+
+Expected output:
+
+```
+NAME                 TYPE        CLUSTER-IP    PORT(S)
+prometheus-service   ClusterIP   10.x.x.x      9090/TCP
+grafana-service      NodePort    10.x.x.x      3000:32000/TCP
+```
+
+#### Step 5 — Access the UIs
+
+**Grafana (NodePort 32000):**
+
+```bash
+# minikube
+minikube service grafana-service -n monitoring
+
+# Cloud / bare-metal — use the node IP
+kubectl get nodes -o wide
+# Open http://NODE_IP:32000  →  admin / admin
+```
+
+**Prometheus (port-forward for internal access):**
+
+```bash
+kubectl port-forward svc/prometheus-service 9090:9090 -n monitoring
+# Open http://localhost:9090
+```
+
+Confirm portfolio targets are UP: **Prometheus UI → Status → Targets → kubernetes-pods**
+
+#### Step 6 — Open the dashboard
+
+1. Log in to Grafana at the NodePort URL with `admin / admin`
+2. Navigate to **Dashboards → Portfolio → Portfolio App Metrics**
+
+### Monitoring architecture
+
+```
+Portfolio pods (3 replicas)
+  │  expose /metrics on port 5000
+  │
+  ▼
+Prometheus (monitoring namespace)
+  │  scrapes every 15 s via pod-annotation discovery
+  │  stores 15 days of TSDB data
+  │
+  ▼
+Grafana (monitoring namespace)
+  │  auto-provisioned datasource + dashboard
+  │  NodePort 32000
+  ▼
+Browser → Dashboard showing RPS, latency, errors, per-endpoint traffic
+```
+
+---
+
 ## Full CI/CD + K8s Flow
 
 ```
@@ -420,7 +587,7 @@ Copy `.env.example` to `.env` and fill these in. Never commit `.env` to Git.
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+| ----- | ---------- |
 | Backend | Python 3.11, Flask 3.0 |
 | WSGI Server | Gunicorn |
 | Email | Flask-Mail + Gmail SMTP |
@@ -431,3 +598,5 @@ Copy `.env.example` to `.env` and fill these in. Never commit `.env` to Git.
 | Load Balancing | Kubernetes LoadBalancer Service |
 | Auto-scaling | Kubernetes HPA (2-10 pods) |
 | Ingress / SSL | NGINX Ingress + cert-manager |
+| Metrics collection | Prometheus v2.51 |
+| Metrics visualisation | Grafana v10.4 |

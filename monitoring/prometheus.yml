@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s      # How often to scrape targets
+  evaluation_interval: 15s  # How often to evaluate alerting rules
+
+scrape_configs:
+  # Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Scrape the portfolio Flask app
+  - job_name: 'portfolio'
+    static_configs:
+      - targets: ['portfolio:5000']
+    metrics_path: /metrics
