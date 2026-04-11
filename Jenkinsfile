@@ -110,7 +110,7 @@ pipeline {
                 }
             }
         }
-
+        /* ── Stage 5: Deploy to Kubernetes ────────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
@@ -125,8 +125,9 @@ pipeline {
                         kubectl apply -f k8s/namespace.yaml
                         kubectl apply -f k8s/configmap.yaml
 
+                        CLEAN_PASS=\$(echo "\$GMAIL_PASS" | tr -d ' ')
                         kubectl create secret generic portfolio-secret \
-                            --from-literal="GMAIL_APP_PASSWORD=\$GMAIL_PASS" \
+                            --from-literal="GMAIL_APP_PASSWORD=\${CLEAN_PASS}" \
                             --from-literal="SECRET_KEY=\$SECRET_KEY" \
                             --namespace=${K8S_NAMESPACE} \
                             --dry-run=client -o yaml | kubectl apply -f -
