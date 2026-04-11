@@ -19,12 +19,15 @@ Then create a .env file (copy from .env.example) and fill in your credentials.
 
 from flask import Flask, render_template, request, jsonify
 from flask_mail import Mail, Message
+from prometheus_flask_exporter import PrometheusMetrics
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Portfolio application info', version='1.0.0')
 
 # ─── Flask-Mail Configuration ─────────────────────────────────────────────────
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'

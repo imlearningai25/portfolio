@@ -2,12 +2,13 @@
    Niraj Byanjankar Portfolio — Jenkins CI/CD Pipeline
    ───────────────────────────────────────────────────────────────────
    Stages:
-     1. Checkout        → pull source from GitHub
-     2. Lint & Validate → basic Python syntax check
-     3. Build Image     → docker build
-     4. Push Image      → push to Docker Hub
-     5. Deploy to K8s   → kubectl apply all manifests
-     6. Verify Rollout  → confirm pods are running
+     1. Checkout          → pull source from GitHub
+     2. Lint & Validate   → basic Python syntax check
+     3. Build Image       → docker build
+     4. Push Image        → push to Docker Hub
+     5. Deploy to K8s     → kubectl apply all manifests
+     6. Deploy Monitoring → kubectl apply Prometheus + Grafana manifests
+     7. Verify Rollout    → confirm pods are running
    ═══════════════════════════════════════════════════════════════════ */
 
 pipeline {
@@ -65,7 +66,7 @@ pipeline {
 
                 sh 'pip install PyYAML --break-system-packages'
                 sh '''
-                    for f in k8s/*.yaml; do
+                    for f in k8s/*.yaml k8s/monitoring/*.yaml; do
                         python3 -c "import yaml, sys; yaml.safe_load_all(open('$f'))" \
                             && echo "✅ $f is valid YAML" \
                             || { echo "❌ $f has invalid YAML"; exit 1; }
@@ -142,7 +143,28 @@ pipeline {
             }
         }
 
-        /* ── Stage 6: Verify Rollout ─────────────────────────────────── */
+        /* ── Stage 6: Deploy Monitoring ─────────────────────────────── */
+        stage('Deploy Monitoring') {
+            steps {
+                echo '📊 Deploying Prometheus + Grafana to monitoring namespace...'
+                withCredentials([file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG')]) {
+                    sh """
+                        # Apply monitoring manifests in dependency order
+                        kubectl apply -f k8s/monitoring/namespace.yaml
+                        kubectl apply -f k8s/monitoring/prometheus-rbac.yaml
+                        kubectl apply -f k8s/monitoring/prometheus-configmap.yaml
+                        kubectl apply -f k8s/monitoring/prometheus-deployment.yaml
+                        kubectl apply -f k8s/monitoring/grafana-configmap.yaml
+                        kubectl apply -f k8s/monitoring/grafana-deployment.yaml
+
+                        echo "✅ Monitoring manifests applied"
+                        kubectl get pods -n monitoring
+                    """
+                }
+            }
+        }
+
+        /* ── Stage 7: Verify Rollout ─────────────────────────────────── */
         stage('Verify Rollout') {
             steps {
                 echo '✅ Verifying deployment rollout...'
