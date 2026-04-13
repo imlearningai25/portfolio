@@ -63,6 +63,7 @@ pipeline {
                 echo '🔐 Scanning for hardcoded secrets...'
                 sh '''
                     pip install detect-secrets --break-system-packages --quiet
+                    export PATH="$PATH:/var/jenkins_home/.local/bin"
                     detect-secrets scan \
                         --exclude-files "venv/.*" \
                         --exclude-files ".env.example" \
