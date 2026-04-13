@@ -3,12 +3,13 @@
    ───────────────────────────────────────────────────────────────────
    Stages:
      1. Checkout          → pull source from GitHub
-     2. Lint & Validate   → basic Python syntax check
-     3. Build Image       → docker build
-     4. Push Image        → push to Docker Hub
-     5. Deploy to K8s     → kubectl apply all manifests
-     6. Deploy Monitoring → kubectl apply Prometheus + Grafana manifests
-     7. Verify Rollout    → confirm pods are running
+     2. Lint & Validate   → Python syntax check + YAML validation
+     3. Unit Tests        → pytest (34 tests, JUnit XML report published)
+     4. Build Image       → docker build
+     5. Push Image        → push to Docker Hub
+     6. Deploy to K8s     → kubectl apply all manifests
+     7. Deploy Monitoring → kubectl apply Prometheus + Grafana manifests
+     8. Verify Rollout    → confirm pods are running
    ═══════════════════════════════════════════════════════════════════ */
 
 pipeline {
@@ -31,6 +32,7 @@ pipeline {
         DOCKERHUB_CREDS  = 'dockerhub-credentials'   // username + password
         KUBECONFIG_CREDS = 'kubeconfig'               // secret file
         GMAIL_SECRET_ID  = 'gmail-app-password'       // secret text
+        SECRET_KEY_CREDS = 'SECRET_KEY_ID'            // secret text — Flask session signing key
     }
 
     options {
@@ -76,7 +78,32 @@ pipeline {
             }
         }
 
-        /* ── Stage 3: Build Docker Image ────────────────────────────── */
+        /* ── Stage 3: Unit Tests ────────────────────────────────────── */
+        stage('Unit Tests') {
+            steps {
+                echo '🧪 Installing test dependencies and running unit tests...'
+                sh '''
+                    pip install \
+                        Flask==3.0.3 \
+                        Flask-Mail==0.10.0 \
+                        python-dotenv==1.0.1 \
+                        prometheus-flask-exporter==0.23.1 \
+                        pytest==8.2.0 \
+                        --break-system-packages --quiet
+
+                    python3 -m pytest tests/test_app.py -v \
+                        --tb=short \
+                        --junit-xml=test-results.xml
+                '''
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
+            }
+        }
+
+        /* ── Stage 4: Build Docker Image ────────────────────────────── */
         stage('Build Image') {
             steps {
                 echo "🐳 Building Docker image: ${IMAGE_VERSIONED}"
@@ -118,7 +145,7 @@ pipeline {
                 withCredentials([
                     file(credentialsId: "${KUBECONFIG_CREDS}", variable: 'KUBECONFIG'),
                     string(credentialsId: "${GMAIL_SECRET_ID}", variable: 'GMAIL_PASS'),
-                    string(credentialsId: "SECRET_KEY_ID", variable: 'SECRET_KEY')
+                    string(credentialsId: "${SECRET_KEY_CREDS}", variable: 'SECRET_KEY')
                 ]) {
                     sh """
                         kubectl apply -f k8s/namespace.yaml

@@ -195,13 +195,16 @@ Go to **Manage Jenkins -> Plugins -> Available** and install:
 
 ### Step 3 — Add Jenkins Credentials
 
-Go to **Manage Jenkins -> Credentials -> Global -> Add Credential** and create these three:
+Go to **Manage Jenkins → Credentials → Global → Add Credential** and create all four:
 
 | Credential ID | Type | What to enter |
-|---|---|---|
+| --- | --- | --- |
 | `dockerhub-credentials` | Username with password | Your Docker Hub username and password |
 | `kubeconfig` | Secret file | Upload your `~/.kube/config` file |
-| `gmail-app-password` | Secret text | Your 16-char Gmail App Password |
+| `gmail-app-password` | Secret text | Your 16-char Gmail App Password (no spaces) |
+| `SECRET_KEY_ID` | Secret text | A long random string used by Flask to sign sessions (e.g. output of `python3 -c "import secrets; print(secrets.token_hex(32))"`) |
+
+> **All four credentials are required.** The pipeline will fail at the Deploy stage if any are missing. `SECRET_KEY_ID` is the credential ID expected by the Jenkinsfile — the name must match exactly.
 
 ### Step 4 — Create the Pipeline Job
 
@@ -239,12 +242,15 @@ Jenkins picks up the push (webhook)
        v
 Stage 1: Checkout          -- pulls the latest code
 Stage 2: Lint              -- Python syntax + validates YAML (incl. k8s/monitoring/)
-Stage 3: Build Image       -- docker build, tagged with build number (e.g. :42)
-Stage 4: Push Image        -- docker push to Docker Hub (:42 and :latest)
-Stage 5: Deploy K8s        -- kubectl apply all app manifests to the cluster
-Stage 6: Deploy Monitoring -- kubectl apply Prometheus + Grafana to monitoring namespace
-Stage 7: Verify            -- waits for rollout to complete, shows pod/service/HPA status
+Stage 3: Unit Tests        -- pytest (34 tests); publishes JUnit XML report in Jenkins
+Stage 4: Build Image       -- docker build, tagged with build number (e.g. :42)
+Stage 5: Push Image        -- docker push to Docker Hub (:42 and :latest)
+Stage 6: Deploy K8s        -- kubectl apply all app manifests to the cluster
+Stage 7: Deploy Monitoring -- kubectl apply Prometheus + Grafana to monitoring namespace
+Stage 8: Verify            -- waits for rollout to complete, shows pod/service/HPA status
 ```
+
+> **Build is gated on tests** — Stage 4 (Build Image) only runs if all 34 unit tests pass. A failing test aborts the pipeline before any image is built or deployed.
 
 > **Monitoring deploys are idempotent** — on the first run the `monitoring` namespace and all resources are created. On every subsequent run `kubectl apply` no-ops unless a manifest actually changed.
 
