@@ -41,10 +41,26 @@ spec:
             matchLabels:
               app: portfolio
 
+      # Pod-level security context
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+
       containers:
         - name: portfolio
           image: nirajbjk/portfolio-portfolio:latest      # Replaced by Jenkins (e.g. imlearningai25/portfolio:42)
           imagePullPolicy: Always
+
+          # Container-level security context
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
 
           ports:
             - containerPort: 5000
@@ -67,6 +83,10 @@ spec:
                 secretKeyRef:
                   name: portfolio-secret
                   key: SECRET_KEY
+
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
 
           # ── Resource limits (prevent one pod hogging the node) ───
           resources:
@@ -97,3 +117,8 @@ spec:
 
       # Graceful shutdown — give Gunicorn time to finish requests
       terminationGracePeriodSeconds: 30
+
+      # emptyDir volumes allow writes when readOnlyRootFilesystem is enabled
+      volumes:
+        - name: tmp
+          emptyDir: {}

@@ -4,3 +4,5 @@ python-dotenv==1.0.1
 gunicorn==22.0.0
 prometheus-flask-exporter==0.23.1
 pytest==8.2.0
+bandit==1.8.3
+safety==3.5.1
