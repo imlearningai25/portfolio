@@ -1,15 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Niraj Byanjankar Portfolio — Jenkins CI/CD Pipeline
+   Niraj Byanjankar Portfolio — Jenkins CI/CD Pipeline (DevSecOps)
    ───────────────────────────────────────────────────────────────────
    Stages:
-     1. Checkout          → pull source from GitHub
-     2. Lint & Validate   → Python syntax check + YAML validation
-     3. Unit Tests        → pytest (34 tests, JUnit XML report published)
-     4. Build Image       → docker build
-     5. Push Image        → push to Docker Hub
-     6. Deploy to K8s     → kubectl apply all manifests
-     7. Deploy Monitoring → kubectl apply Prometheus + Grafana manifests
-     8. Verify Rollout    → confirm pods are running
+      1. Checkout           → pull source from GitHub
+      2. Secrets Scan       → detect-secrets: block hardcoded credentials
+      3. Lint & Validate    → Python syntax check + YAML validation
+      4. SAST               → Bandit: Python static security analysis
+      5. Unit Tests         → pytest (34 tests, JUnit XML report published)
+      6. Dependency Scan    → Safety: check dependencies for known CVEs
+      7. Build Image        → docker build
+      8. Container Scan     → Trivy: scan image for HIGH/CRITICAL CVEs
+      9. Push Image         → push to Docker Hub
+     10. Deploy to K8s      → kubectl apply all manifests
+     11. Deploy Monitoring  → kubectl apply Prometheus + Grafana manifests
+     12. Verify Rollout     → confirm pods are running
    ═══════════════════════════════════════════════════════════════════ */
 
 pipeline {
@@ -53,7 +57,35 @@ pipeline {
             }
         }
 
-        /* ── Stage 2: Lint & Validate ───────────────────────────────── */
+        /* ── Stage 2: Secrets Scan ──────────────────────────────────── */
+        stage('Secrets Scan') {
+            steps {
+                echo '🔐 Scanning for hardcoded secrets...'
+                sh '''
+                    pip install detect-secrets --break-system-packages --quiet
+                    detect-secrets scan \
+                        --exclude-files "venv/.*" \
+                        --exclude-files ".env.example" \
+                        > .secrets.baseline
+                    detect-secrets audit .secrets.baseline --report || true
+
+                    # Fail if any real secrets are detected (not whitelisted)
+                    python3 -c "
+import json, sys
+with open('.secrets.baseline') as f:
+    baseline = json.load(f)
+results = baseline.get('results', {})
+leaked = {f: s for f, s in results.items() if any(not e.get('is_secret') is False for e in s)}
+if leaked:
+    print('SECRETS DETECTED in:', list(leaked.keys()))
+    sys.exit(1)
+print('No secrets detected.')
+"
+                '''
+            }
+        }
+
+        /* ── Stage 3: Lint & Validate ───────────────────────────────── */
         stage('Lint & Validate') {
             steps {
                 echo '🔍 Validating Python syntax...'
@@ -78,7 +110,33 @@ pipeline {
             }
         }
 
-        /* ── Stage 3: Unit Tests ────────────────────────────────────── */
+        /* ── Stage 4: SAST — Bandit ─────────────────────────────────── */
+        stage('SAST') {
+            steps {
+                echo '🔒 Running Bandit static security analysis...'
+                sh '''
+                    pip install bandit --break-system-packages --quiet
+                    bandit -r app.py \
+                        --severity-level medium \
+                        --confidence-level medium \
+                        --format json \
+                        -o bandit-report.json || true
+
+                    # Print human-readable summary
+                    bandit -r app.py \
+                        --severity-level medium \
+                        --confidence-level medium \
+                        --exit-zero
+                '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'bandit-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+
+        /* ── Stage 5: Unit Tests ────────────────────────────────────── */
         stage('Unit Tests') {
             steps {
                 echo '🧪 Installing test dependencies and running unit tests...'
@@ -103,7 +161,29 @@ pipeline {
             }
         }
 
-        /* ── Stage 4: Build Docker Image ────────────────────────────── */
+        /* ── Stage 6: Dependency Vulnerability Scan — Safety ───────── */
+        stage('Dependency Scan') {
+            steps {
+                echo '📦 Scanning dependencies for known CVEs...'
+                sh '''
+                    pip install safety --break-system-packages --quiet
+                    safety check \
+                        --file requirements.txt \
+                        --output json \
+                        --save-json safety-report.json || true
+
+                    # Re-run for human-readable output (fail on any vuln)
+                    safety check --file requirements.txt
+                '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'safety-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+
+        /* ── Stage 7: Build Docker Image ────────────────────────────── */
         stage('Build Image') {
             steps {
                 echo "🐳 Building Docker image: ${IMAGE_VERSIONED}"
@@ -119,7 +199,41 @@ pipeline {
             }
         }
 
-        /* ── Stage 4: Push to Docker Hub ────────────────────────────── */
+        /* ── Stage 8: Container Scan — Trivy ───────────────────────── */
+        stage('Container Scan') {
+            steps {
+                echo "🐳 Scanning ${IMAGE_VERSIONED} for vulnerabilities with Trivy..."
+                sh """
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v trivy-cache:/root/.cache/trivy \
+                        aquasec/trivy:latest image \
+                        --exit-code 1 \
+                        --severity HIGH,CRITICAL \
+                        --no-progress \
+                        --format json \
+                        --output trivy-report.json \
+                        ${IMAGE_VERSIONED} || true
+
+                    # Re-run for human-readable output (fail on CRITICAL only)
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v trivy-cache:/root/.cache/trivy \
+                        aquasec/trivy:latest image \
+                        --exit-code 1 \
+                        --severity CRITICAL \
+                        --no-progress \
+                        ${IMAGE_VERSIONED}
+                """
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'trivy-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+
+        /* ── Stage 9: Push to Docker Hub ────────────────────────────── */
         stage('Push Image') {
             steps {
                 echo '📤 Pushing image to Docker Hub...'
@@ -138,7 +252,7 @@ pipeline {
                 }
             }
         }
-        /* ── Stage 5: Deploy to Kubernetes ────────────────────────────── */
+        /* ── Stage 10: Deploy to Kubernetes ───────────────────────────── */
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes cluster...'
@@ -163,6 +277,7 @@ pipeline {
                         kubectl apply -f k8s/service.yaml
                         kubectl apply -f k8s/hpa.yaml
                         kubectl apply -f k8s/ingress.yaml
+                        kubectl apply -f k8s/network-policy.yaml
 
                         echo "✅ All manifests applied"
                     """
@@ -170,7 +285,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 6: Deploy Monitoring ─────────────────────────────── */
+        /* ── Stage 11: Deploy Monitoring ────────────────────────────── */
         stage('Deploy Monitoring') {
             steps {
                 echo '📊 Deploying Prometheus + Grafana to monitoring namespace...'
@@ -191,7 +306,7 @@ pipeline {
             }
         }
 
-        /* ── Stage 7: Verify Rollout ─────────────────────────────────── */
+        /* ── Stage 12: Verify Rollout ───────────────────────────────── */
         stage('Verify Rollout') {
             steps {
                 echo '✅ Verifying deployment rollout...'

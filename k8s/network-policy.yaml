@@ -1,0 +1,57 @@
+# ── NetworkPolicy ────────────────────────────────────────────────────────────
+# Restricts ingress/egress for portfolio pods.
+#
+# Ingress allowed from:
+#   - Pods with label role=ingress (NGINX ingress controller)
+#   - Prometheus pods in the monitoring namespace (for /metrics scraping)
+#
+# Egress allowed to:
+#   - Kubernetes DNS (port 53 UDP/TCP) for service discovery
+#   - External SMTP (port 587) for contact-form email delivery
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: portfolio-network-policy
+  namespace: portfolio
+spec:
+  podSelector:
+    matchLabels:
+      app: portfolio
+  policyTypes:
+    - Ingress
+    - Egress
+
+  ingress:
+    # Allow traffic from the NGINX ingress controller
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 5000
+
+    # Allow Prometheus to scrape /metrics
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+          podSelector:
+            matchLabels:
+              app: prometheus
+      ports:
+        - protocol: TCP
+          port: 5000
+
+  egress:
+    # Allow DNS resolution
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+
+    # Allow outbound SMTP for contact form emails (Gmail STARTTLS)
+    - ports:
+        - protocol: TCP
+          port: 587
