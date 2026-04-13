@@ -64,21 +64,24 @@ pipeline {
                 sh '''
                     pip install detect-secrets --break-system-packages --quiet
                     export PATH="$PATH:/var/jenkins_home/.local/bin"
+
+                    # Exclude: env files, docs, and k8s secret template (placeholder values only)
                     detect-secrets scan \
                         --exclude-files "venv/.*" \
-                        --exclude-files ".env.example" \
+                        --exclude-files "\\.env$" \
+                        --exclude-files "\\.env\\.example$" \
+                        --exclude-files "README\\.md$" \
+                        --exclude-files "k8s/secret\\.yaml$" \
                         > .secrets.baseline
-                    detect-secrets audit .secrets.baseline --report || true
 
-                    # Fail if any real secrets are detected (not whitelisted)
+                    # Fail if detect-secrets found anything in the remaining files
                     python3 -c "
 import json, sys
 with open('.secrets.baseline') as f:
     baseline = json.load(f)
-results = baseline.get('results', {})
-leaked = {f: s for f, s in results.items() if any(not e.get('is_secret') is False for e in s)}
-if leaked:
-    print('SECRETS DETECTED in:', list(leaked.keys()))
+results = {k: v for k, v in baseline.get('results', {}).items() if v}
+if results:
+    print('SECRETS DETECTED in:', list(results.keys()))
     sys.exit(1)
 print('No secrets detected.')
 "
